@@ -63,7 +63,7 @@ const isReactOnly = data.react && !vanillaComponents[id!]
 >
   <header class="bg-stone-900 text-white p-6">
     <div class="max-w-4xl mx-auto flex items-center justify-between">
-      <a href="/" class="text-white no-underline hover:text-amber-400">← All Carousels</a>
+      <a href={import.meta.env.BASE_URL} class="text-white no-underline hover:text-amber-400">← All Carousels</a>
       <h1 class="m-0 text-xl font-bold">{data.name}</h1>
     </div>
   </header>

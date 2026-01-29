@@ -23,7 +23,7 @@ const carousels = Object.entries(carouselData).sort((a, b) => {
     </p>
 
     <div class="flex gap-4 justify-center">
-      <a href="/research" class="btn-primary-invert">View Full Research</a>
+      <a href={`${import.meta.env.BASE_URL}research`} class="btn-primary-invert">View Full Research</a>
     </div>
   </header>
 
@@ -31,7 +31,7 @@ const carousels = Object.entries(carouselData).sort((a, b) => {
     <div class="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
       {carousels.map(([id, data]) => (
         <a
-          href={`/carousel/${id}`}
+          href={`${import.meta.env.BASE_URL}carousel/${id}`}
           class="block bg-white rounded-lg p-6 shadow-md hover:shadow-lg transition-shadow no-underline text-stone-900 border-2 border-transparent hover:border-amber-400 focus:border-amber-400 focus:outline-none"
         >
           <div class="flex items-start justify-between mb-2">

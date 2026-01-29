@@ -4,7 +4,7 @@
 
 Compare the accessibility of 11 popular carousel libraries with real implementations, WCAG compliance analysis, and interactive testing.
 
-**[View the site →](https://cogapplabs.github.io/carousa11y)**
+**[View the site →](https://cogapplabs.github.io/carousa11y/)**
 
 ## Libraries Tested
 
