@@ -1,0 +1,59 @@
+---
+interface Props {
+  frontmatter: {
+    title: string
+    description?: string
+  }
+}
+
+const { frontmatter } = Astro.props
+const description = frontmatter.description || 'Carousel accessibility research and comparison.'
+const canonicalURL = new URL(Astro.url.pathname, Astro.site || 'https://example.com')
+---
+
+<!doctype html>
+<html lang="en" class="bg-stone-100 text-stone-900">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="canonical" href={canonicalURL} />
+
+    <title>{frontmatter.title}</title>
+    <meta name="description" content={description} />
+
+    <!-- Open Graph / Social -->
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content={canonicalURL} />
+    <meta property="og:title" content={frontmatter.title} />
+    <meta property="og:description" content={description} />
+
+    <!-- Twitter -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={frontmatter.title} />
+    <meta name="twitter:description" content={description} />
+  </head>
+  <body class="m-0 p-0 font-sans leading-relaxed">
+    <a href="#main" class="skip-link">Skip to main content</a>
+
+    <header class="bg-stone-900 text-white p-6">
+      <div class="max-w-4xl mx-auto flex items-center justify-between">
+        <a href="/" class="text-white no-underline hover:text-amber-400">← Back to Demo</a>
+        <span class="text-xl font-bold">Research</span>
+      </div>
+    </header>
+
+    <main id="main" class="max-w-4xl mx-auto p-8 prose prose-stone prose-headings:text-stone-900 prose-a:text-amber-700 prose-a:underline prose-a:underline-offset-4 prose-code:bg-stone-200 prose-code:px-1 prose-code:rounded">
+      <slot />
+    </main>
+  </body>
+</html>
+
+<style is:global>
+  @import "tailwindcss";
+  @import "../css/prose.css";
+
+  .skip-link {
+    @apply absolute -top-10 left-0 bg-stone-900 text-white px-4 py-2 z-50 no-underline focus:top-0;
+  }
+</style>

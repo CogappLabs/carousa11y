@@ -1,0 +1,4 @@
+/* Flickity - class names cannot be customized (hardcoded) */
+.flickity-slide {
+  @apply w-full px-4;
+}

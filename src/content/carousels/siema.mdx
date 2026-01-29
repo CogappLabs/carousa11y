@@ -1,0 +1,71 @@
+---
+id: siema
+wcagStatus: pass
+fixesApplied:
+  - Accessible prev/next buttons
+  - Optional pagination buttons with aria-label and aria-current (if used)
+  - Added aria-label to container
+---
+
+## Summary
+
+- Prev/next controls provide the required accessible navigation
+- Optional pagination buttons (if used) should be labeled and reflect current state
+- Container labeled as a region for assistive tech
+
+## Accessibility Analysis
+
+**Score:** 85.7% — 6/7 accessibility issues resolved
+**Median resolution time:** 3 days
+
+### Strengths
+
+- Very lightweight (~3KB)
+- Fast issue resolution when reported
+
+### Concerns
+
+- **Unmaintained** — last update years ago
+- Single open issue is about maintenance status (2,000+ days old)
+- Limited a11y features built-in
+
+---
+
+## Our Implementation Notes
+
+Siema has no built-in pagination. Pagination is optional; if included, use buttons with `aria-label` and `aria-current`.
+
+### Implementation Details
+
+- No built-in pagination; optional to add
+- No built-in accessibility features
+- Simple API: `new Siema({ selector, loop, onChange })`
+- Use `onChange` callback to sync custom pagination state
+
+### Custom Dots Setup
+
+```javascript
+const siema = new Siema({
+  selector: '.siema',
+  loop: true,
+  onChange: function() {
+    updateDots(this.currentSlide)
+  }
+})
+
+// Dot click handler
+dots.forEach((dot, i) => {
+  dot.addEventListener('click', () => {
+    siema.goTo(i)
+    updateDots(i)
+  })
+})
+```
+
+### Accessibility Additions
+
+Added to our implementation:
+- `role="region"` on carousel container
+- `aria-label="Featured content carousel"` on container
+- Pagination buttons with `aria-label="Go to slide N"` (if used)
+- `aria-current="true"` on active dot

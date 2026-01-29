@@ -1,0 +1,11 @@
+pre-commit:
+  parallel: true
+  commands:
+    typecheck:
+      run: npx astro check
+    lint:
+      glob: "*.{ts,tsx,js,jsx,json}"
+      run: npx biome check --write {staged_files}
+    format:
+      glob: "*.{ts,tsx,js,jsx,json,css}"
+      run: npx biome format --write {staged_files}

@@ -1,0 +1,90 @@
+---
+id: react-responsive
+wcagStatus: pass
+fixesApplied:
+  - Custom controls (built-in uses li[role=button] if you include pagination)
+  - Added aria-label to container
+---
+
+## Summary
+
+- Built-in `showIndicators` uses `li[role=button]` (invalid ARIA)
+- Pagination is optional; if included, implement custom buttons
+
+## Accessibility Analysis
+
+**Score:** 100% — All 22/22 accessibility issues resolved
+**Median resolution time:** 259.6 days
+
+### Known Issues (closed but indicate architectural problems)
+
+- `role="button"` on `<li>` elements — invalid ARIA
+- Carousel root receives unwanted focus
+- Missing focus styles on control arrows
+- Visual elements (dots, arrows) read to screen readers without `aria-hidden`
+- Invalid HTML structure during render phases
+
+### Caveat
+
+100% score is misleading — the closed issues reveal poor accessibility architecture in the library.
+
+---
+
+## Our Implementation Notes
+
+Using custom controls instead of built-in `showIndicators` and `showArrows` to avoid a11y issues (li elements with role="button", improper list structure).
+
+### The Problem with Built-in Controls
+
+The library's `showIndicators` prop renders pagination as:
+
+```html
+<ul class="control-dots">
+  <li role="button" class="dot">...</li>  <!-- Invalid ARIA! -->
+</ul>
+```
+
+Using `role="button"` on `<li>` elements is invalid. Buttons should be `<button>` elements.
+
+### Our Solution
+
+Disable built-in controls and implement custom ones:
+
+```jsx
+<Carousel
+  selectedItem={currentSlide}
+  onChange={setCurrentSlide}
+  showArrows={false}
+  showIndicators={false}
+  showThumbs={false}
+  showStatus={false}
+  infiniteLoop={true}
+>
+  {/* slides */}
+</Carousel>
+
+{/* Custom prev/next buttons */}
+<div className="flex justify-center gap-4 mt-4">
+  <button onClick={prev} className="carousel-btn">Previous</button>
+  <button onClick={next} className="carousel-btn">Next</button>
+</div>
+
+{/* Custom dots with proper ARIA */}
+<div className="flex justify-center gap-2 mt-4">
+  {slides.map((_, i) => (
+    <button
+      key={i}
+      onClick={() => goTo(i)}
+      aria-label={`Go to slide ${i + 1}`}
+      aria-current={i === currentSlide ? 'true' : undefined}
+      className={i === currentSlide ? 'bg-stone-800' : 'bg-stone-300'}
+    />
+  ))}
+</div>
+```
+
+### Container Accessibility
+
+Added to our implementation:
+- `role="region"` on wrapper
+- `aria-label="Featured content carousel"` on wrapper

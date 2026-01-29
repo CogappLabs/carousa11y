@@ -1,0 +1,68 @@
+---
+import { slides } from '../../data/slides'
+import Slide from '../Slide.astro'
+---
+
+<div class="flicking-viewport">
+  <div class="flicking-camera">
+    {slides.map((s) => (
+      <Slide {...s} class="flicking-panel" />
+    ))}
+  </div>
+</div>
+<div class="flex justify-center gap-4 mt-4">
+  <button class="flicking-prev carousel-btn" type="button">Previous</button>
+  <button class="flicking-next carousel-btn" type="button">Next</button>
+</div>
+<div class="flicking-pagination flex justify-center gap-2 mt-4"></div>
+
+<script>
+  async function initFlicking() {
+    const { default: Flicking, connectFlickingReactiveAPI } = await import('@egjs/flicking')
+
+    const viewport = document.querySelector('.flicking-viewport')
+    if (!viewport) return
+
+    const flicking = new Flicking('.flicking-viewport', {
+      circular: true,
+      align: 'prev',
+      panelsPerView: 1,
+      inputType: ['touch', 'mouse'],
+      moveType: 'snap',
+      preventDefaultOnDrag: true,
+    })
+
+    const reactiveObj = connectFlickingReactiveAPI(flicking)
+
+    // Create pagination dots
+    const pagination = document.querySelector('.flicking-pagination')
+    if (pagination) {
+      const dots = Array.from({ length: reactiveObj.totalPanelCount }, (_, i) => {
+        const btn = document.createElement('button')
+        btn.type = 'button'
+        btn.className = `w-3 h-3 rounded-full border-none p-0 cursor-pointer ${i === reactiveObj.currentPanelIndex ? 'bg-stone-800' : 'bg-stone-300'}`
+        btn.setAttribute('aria-label', `Go to slide ${i + 1}`)
+        btn.addEventListener('click', () => reactiveObj.moveTo(i))
+        return btn
+      })
+      pagination.append(...dots)
+
+      reactiveObj.subscribe('currentPanelIndex', (index: number) => {
+        dots.forEach((dot, i) => {
+          dot.classList.toggle('bg-stone-800', i === index)
+          dot.classList.toggle('bg-stone-300', i !== index)
+          dot.setAttribute('aria-current', i === index ? 'true' : 'false')
+        })
+      })
+    }
+
+    document.querySelector('.flicking-prev')?.addEventListener('click', () => {
+      flicking.prev().catch(() => {})
+    })
+    document.querySelector('.flicking-next')?.addEventListener('click', () => {
+      flicking.next().catch(() => {})
+    })
+  }
+
+  initFlicking()
+</script>

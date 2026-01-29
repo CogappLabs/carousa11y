@@ -1,0 +1,59 @@
+---
+import Layout from '../layouts/Layout.astro'
+import carouselData from '../carousels.json'
+
+// Sort by score (highest first)
+const carousels = Object.entries(carouselData).sort((a, b) => {
+  const scoreA = parseFloat(a[1].score)
+  const scoreB = parseFloat(b[1].score)
+  return scoreB - scoreA
+})
+---
+
+<Layout
+  title="Carousel Accessibility Comparison | Find the Most Accessible Carousel"
+  description="Compare accessibility scores of 12+ popular carousel libraries including Embla, Swiper, Flickity, and more. Detailed WCAG compliance testing and recommendations."
+>
+  <header class="bg-stone-900 text-white p-8 text-center">
+    <h1 class="m-0 mb-2 text-3xl font-bold">Carousel Accessibility Comparison</h1>
+    <p class="m-0 mb-6 text-stone-300">
+      Compare accessibility scores and features of popular carousel libraries.
+      <br />
+      Scores from <a href="https://isitaccessible.dev" class="text-amber-400 hover:underline" target="_blank" rel="noopener">isitaccessible.dev</a>
+    </p>
+
+    <div class="flex gap-4 justify-center">
+      <a href="/research" class="btn-primary-invert">View Full Research</a>
+    </div>
+  </header>
+
+  <main id="main" class="max-w-6xl mx-auto p-8">
+    <div class="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+      {carousels.map(([id, data]) => (
+        <a
+          href={`/carousel/${id}`}
+          class="block bg-white rounded-lg p-6 shadow-md hover:shadow-lg transition-shadow no-underline text-stone-900 border-2 border-transparent hover:border-amber-400 focus:border-amber-400 focus:outline-none"
+        >
+          <div class="flex items-start justify-between mb-2">
+            <h2 class="m-0 text-lg font-bold">{data.name}</h2>
+            <span class={`text-sm font-bold px-2 py-1 rounded ${
+              parseFloat(data.score) >= 80 ? 'bg-green-100 text-green-800' :
+              parseFloat(data.score) >= 60 ? 'bg-amber-100 text-amber-800' :
+              'bg-red-100 text-red-800'
+            }`}>
+              {data.score}
+            </span>
+          </div>
+
+          <p class="text-sm text-stone-600 m-0 mb-3">{data.notes}</p>
+
+          <div class="flex flex-wrap gap-2 text-xs">
+            <span class="bg-stone-100 px-2 py-1 rounded">{data.stars} ⭐</span>
+            {'hasReact' in data && data.hasReact && <span class="bg-blue-100 text-blue-800 px-2 py-1 rounded">React</span>}
+            {'react' in data && data.react && <span class="bg-blue-100 text-blue-800 px-2 py-1 rounded">React Only</span>}
+          </div>
+        </a>
+      ))}
+    </div>
+  </main>
+</Layout>

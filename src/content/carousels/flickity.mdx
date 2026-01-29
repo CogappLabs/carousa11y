@@ -1,0 +1,69 @@
+---
+id: flickity
+wcagStatus: pass
+fixesApplied:
+  - Custom controls (built-in dots not keyboard accessible if you include pagination)
+  - tabindex management for hidden slides
+  - Added aria-label to container
+---
+
+## Summary
+
+- `aria-hidden` on inactive slides traps focus on links/buttons
+- Fix: manage `tabindex` on focusable elements in hidden slides
+- Pagination is optional; if included, use custom buttons with accessible labels
+
+## Accessibility Analysis
+
+**Score:** 74.6% — 44/59 accessibility issues resolved
+**Median resolution time:** 69 days
+
+### Critical Open Issues (15)
+
+- `aria-hidden` incorrectly applied to visible elements
+- Previous/next buttons lack accessible names
+- Page dots not keyboard accessible (if pagination is used)
+- Screen readers crash after clicking navigation
+- Slides outside viewport remain focusable
+
+### Recommendation
+
+The accessible-carousel-boilerplates project recommends avoiding `wrapAround` and `accessibility` options.
+
+---
+
+## Our Implementation Notes
+
+Flickity applies `aria-hidden` to inactive slides but keeps focusable elements inside. We manage `tabindex` on slide links to prevent focus traps.
+
+### The Focus Trap Problem
+
+Flickity sets `aria-hidden="true"` on non-visible slides, but links and buttons inside those slides remain focusable. This creates a focus trap where screen reader users can tab into content they can't see.
+
+### Our Fix
+
+```javascript
+const updateFocusableElements = (selectedIndex) => {
+  slides.forEach((slide, i) => {
+    const focusables = slide.querySelectorAll('a, button, input, select, textarea')
+    focusables.forEach((el) => {
+      el.setAttribute('tabindex', i === selectedIndex ? '0' : '-1')
+    })
+  })
+}
+
+flkty.on('select', () => {
+  updateFocusableElements(flkty.selectedIndex)
+})
+
+// Initial setup
+updateFocusableElements(0)
+```
+
+### Custom Controls
+
+Built-in page dots are not keyboard accessible. If you include pagination, implement custom buttons with:
+- Proper `<button>` elements
+- `aria-label="Go to slide N"`
+- `aria-current="true"` on active dot
+- Focus ring styles

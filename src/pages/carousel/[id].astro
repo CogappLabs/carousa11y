@@ -1,0 +1,154 @@
+---
+import Layout from '../../layouts/Layout.astro'
+import CarouselMeta from '../../components/CarouselMeta.astro'
+import carouselData from '../../carousels.json'
+import type { CarouselMeta as CarouselMetaType } from '../../data/types'
+
+// Import all vanilla carousel components
+import EmblaVanilla from '../../components/carousels/EmblaVanilla.astro'
+import FlickingVanilla from '../../components/carousels/FlickingVanilla.astro'
+import SwiperVanilla from '../../components/carousels/SwiperVanilla.astro'
+import SplideVanilla from '../../components/carousels/SplideVanilla.astro'
+import KeenVanilla from '../../components/carousels/KeenVanilla.astro'
+import SiemaVanilla from '../../components/carousels/SiemaVanilla.astro'
+import FlickityVanilla from '../../components/carousels/FlickityVanilla.astro'
+import TinyVanilla from '../../components/carousels/TinyVanilla.astro'
+import GlideVanilla from '../../components/carousels/GlideVanilla.astro'
+
+// Import React carousel components
+import EmblaReact from '../../components/carousels/EmblaReact'
+import FlickingReact from '../../components/carousels/FlickingReact'
+import SwiperReact from '../../components/carousels/SwiperReact'
+import SplideReact from '../../components/carousels/SplideReact'
+import KeenReact from '../../components/carousels/KeenReact'
+import ReactSlick from '../../components/carousels/ReactSlick'
+import ReactResponsive from '../../components/carousels/ReactResponsive'
+
+// Import MDX documentation files
+const docs = import.meta.glob('../../content/carousels/*.mdx', { eager: true })
+
+export function getStaticPaths() {
+  return Object.keys(carouselData).map((id) => ({ params: { id } }))
+}
+
+const { id } = Astro.params
+const data = (carouselData as Record<string, CarouselMetaType>)[id!]
+
+// Get the MDX content for this carousel
+const docPath = `../../content/carousels/${id}.mdx`
+const doc = docs[docPath] as { Content: any; frontmatter: any } | undefined
+const Content = doc?.Content
+const frontmatter = doc?.frontmatter
+
+const vanillaComponents: Record<string, any> = {
+  embla: EmblaVanilla,
+  flicking: FlickingVanilla,
+  swiper: SwiperVanilla,
+  splide: SplideVanilla,
+  keen: KeenVanilla,
+  siema: SiemaVanilla,
+  flickity: FlickityVanilla,
+  tiny: TinyVanilla,
+  glide: GlideVanilla,
+}
+
+const VanillaComponent = vanillaComponents[id!]
+const hasReact = data.hasReact || data.react
+const isReactOnly = data.react && !vanillaComponents[id!]
+---
+
+<Layout
+  title={`${data.name} Accessibility Review | Score: ${data.score}`}
+  description={`${data.name} accessibility score: ${data.score}. ${data.notes} Compare with other carousel libraries.`}
+>
+  <header class="bg-stone-900 text-white p-6">
+    <div class="max-w-4xl mx-auto flex items-center justify-between">
+      <a href="/" class="text-white no-underline hover:text-amber-400">← All Carousels</a>
+      <h1 class="m-0 text-xl font-bold">{data.name}</h1>
+    </div>
+  </header>
+
+  <main id="main" class="max-w-4xl mx-auto p-8">
+    <section class="carousel-section" aria-label={`${data.name} demo`}>
+      <h2>{data.name} <span class="score">({data.score})</span></h2>
+
+      <CarouselMeta {...data} />
+
+      {hasReact && !isReactOnly && (
+        <div class="version-toggle" role="group" aria-label="Version selector">
+          <button type="button" id="vanilla-btn" class="toggle-btn active" aria-pressed="true">
+            Vanilla JS
+          </button>
+          <button type="button" id="react-btn" class="toggle-btn" aria-pressed="false">
+            React
+          </button>
+        </div>
+      )}
+
+      <div id="vanilla-container" class={isReactOnly ? 'hidden' : ''}>
+        {VanillaComponent && <VanillaComponent />}
+      </div>
+
+      <div id="react-container" class={isReactOnly ? '' : 'hidden'}>
+        {id === 'embla' && <EmblaReact client:visible />}
+        {id === 'flicking' && <FlickingReact client:visible />}
+        {id === 'swiper' && <SwiperReact client:only="react" />}
+        {id === 'splide' && <SplideReact client:visible />}
+        {id === 'keen' && <KeenReact client:visible />}
+        {id === 'react-slick' && <ReactSlick client:only="react" />}
+        {id === 'react-responsive' && <ReactResponsive client:only="react" />}
+      </div>
+
+    </section>
+
+    {Content && (
+      <section class="docs-section mt-12 prose prose-stone prose-headings:text-stone-900 prose-a:text-amber-700 prose-a:underline prose-a:underline-offset-4 prose-code:bg-stone-200 prose-code:px-1 prose-code:rounded max-w-none">
+        {frontmatter?.fixesApplied && frontmatter.fixesApplied.length > 0 && (
+          <div class="bg-amber-50 border-l-4 border-amber-400 p-4 mb-8">
+            <h3 class="mt-0 text-amber-800">Accessibility Fixes Applied</h3>
+            <ul class="mb-0">
+              {frontmatter.fixesApplied.map((fix: string) => (
+                <li>{fix}</li>
+              ))}
+            </ul>
+          </div>
+        )}
+        <Content />
+      </section>
+    )}
+  </main>
+</Layout>
+
+{hasReact && !isReactOnly && (
+  <script>
+    const vanillaBtn = document.getElementById('vanilla-btn')
+    const reactBtn = document.getElementById('react-btn')
+    const vanillaContainer = document.getElementById('vanilla-container')
+    const reactContainer = document.getElementById('react-container')
+
+    vanillaBtn?.addEventListener('click', () => {
+      vanillaBtn.classList.add('active')
+      vanillaBtn.setAttribute('aria-pressed', 'true')
+      reactBtn?.classList.remove('active')
+      reactBtn?.setAttribute('aria-pressed', 'false')
+      vanillaContainer?.classList.remove('hidden')
+      reactContainer?.classList.add('hidden')
+      history.replaceState(null, '', window.location.pathname)
+    })
+
+    reactBtn?.addEventListener('click', () => {
+      reactBtn.classList.add('active')
+      reactBtn.setAttribute('aria-pressed', 'true')
+      vanillaBtn?.classList.remove('active')
+      vanillaBtn?.setAttribute('aria-pressed', 'false')
+      reactContainer?.classList.remove('hidden')
+      vanillaContainer?.classList.add('hidden')
+      history.replaceState(null, '', window.location.pathname + '#react')
+    })
+
+    // Check initial hash
+    if (window.location.hash === '#react') {
+      reactBtn?.click()
+    }
+  </script>
+)}

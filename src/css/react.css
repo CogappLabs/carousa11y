@@ -1,0 +1,20 @@
+/* React carousels - styling for nested elements we can't add classes to */
+.react-slide {
+  @apply px-4;
+
+  img {
+    @apply w-full h-52 object-cover rounded;
+  }
+
+  h3 {
+    @apply mt-4 mb-2 text-xl;
+  }
+
+  p {
+    @apply m-0 mb-3 text-stone-600;
+  }
+
+  a {
+    @apply text-stone-700 underline;
+  }
+}

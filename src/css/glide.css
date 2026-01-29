@@ -1,0 +1,20 @@
+/* Glide - classes CAN be customized via classes config object */
+.glide__slide {
+  @apply px-4;
+}
+.glide__arrows {
+  @apply flex justify-center gap-4 mt-4;
+}
+.glide__arrow {
+  @apply carousel-btn;
+}
+.glide__bullets {
+  @apply flex justify-center gap-2 mt-4;
+}
+.glide__bullet {
+  @apply w-3 h-3 rounded-full bg-stone-300 border-none p-0 cursor-pointer;
+  @apply focus:outline-2 focus:outline-amber-500 focus:outline-offset-2;
+  &--active {
+    @apply bg-stone-800;
+  }
+}

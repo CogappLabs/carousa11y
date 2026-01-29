@@ -1,0 +1,269 @@
+---
+layout: ../layouts/MarkdownLayout.astro
+title: Carousel Accessibility Research | Full Analysis & Recommendations
+description: In-depth accessibility research comparing 12 carousel libraries. Detailed WCAG analysis, screen reader testing results, and implementation recommendations.
+---
+
+# Accessible Carousel Library Comparison
+
+> Research conducted 2026-01-29 using [isitaccessible.dev](https://isitaccessible.dev/) scores and official documentation.
+
+## Contents
+
+## TL;DR Recommendation
+
+**[Embla Carousel](https://www.embla-carousel.com/)** is the clear winner for accessibility-focused projects.
+
+| Library | A11y Score | ⭐ Stars | Last Updated | Vanilla | React | Notes |
+|---------|------------|----------|--------------|---------|-------|-------|
+| **Embla Carousel** | 100% | 8.0k | Jan 2026 | Yes | Yes | **Best choice** |
+| @egjs/flicking | 100% | 2.9k | Nov 2025 | Yes | Yes | Only 2 issues reported |
+| react-responsive-carousel | 100% | 2.7k | Jan 2026 | No | Yes | Known ARIA issues |
+| Siema | 85.7% | 3.5k | Sep 2024 | Yes | Wrap | Unmaintained |
+| Swiper | 84.9% | 41.8k | Jan 2026 | Yes | Yes | Keyboard/SR issues |
+| Flickity | 74.6% | 7.6k | May 2024 | Yes | Wrap | Aging |
+| Keen Slider | 66.7% | 5.0k | Jan 2026 | Yes | Yes | Old a11y issue |
+| tiny-slider | 58.5% | 5.3k | Aug 2024 | Yes | Wrap | Focus issues |
+| React Slick | 57.4% | 12.0k | Aug 2025 | No | Yes | 8+ yr old issues |
+| Splide | 53.8% | 5.3k | Jul 2024 | Yes | Yes | Not actually accessible |
+| Glide.js | 44.4% | 7.7k | Nov 2024 | Yes | Wrap | Focus issues |
+
+*Wrap = wrapper needed
+
+### CSS Class Name Customization
+
+Some libraries let you use your own class names (e.g., Tailwind utilities), while others require their fixed classes.
+
+| Library | Customizable? | How |
+|---------|---------------|-----|
+| **Embla Carousel** | ✅ Yes | Class-agnostic - uses element refs, any classes work |
+| **Swiper** | ✅ Yes | `slideClass`, `wrapperClass`, etc. in config |
+| **Glide.js** | ✅ Yes | `classes` config object |
+| **Splide** | ✅ Yes | `classes` config object |
+| **tiny-slider** | ⚠️ Limited | Only animation classes (`animateIn`, `animateOut`) |
+| **Flicking** | ⚠️ Limited | Only `panelClass` for virtual panels |
+| **Siema** | ❌ No | Minimal by design |
+| **Flickity** | ❌ No | Hardcoded classes |
+| **Keen Slider** | ❌ No | Fixed `keen-slider__slide` convention |
+
+### jQuery-Dependent Libraries (Not Included)
+
+The following carousels require jQuery and are not included in the test app:
+
+| Library | A11y Score | Stars | Notes |
+|---------|------------|-------|-------|
+| Slick Carousel | 57.6% | 28.6k | 81 open a11y issues. Very popular but problematic. |
+| Owl Carousel | 27.6% | 7.9k | **Avoid.** Oldest issue 11+ years old. No keyboard nav. |
+| accessible-slick | N/A | 271 | Purpose-built a11y fork of Slick. Best jQuery option. |
+
+If you must use jQuery, **accessible-slick** is the recommended choice as it was specifically designed for accessibility.
+
+---
+
+## Acceptance Criteria for Accessible Carousels
+
+Derived from W3C WAI, ARIA APG, and expert resources. Use this checklist when evaluating or building carousels.
+
+### WCAG Success Criteria
+
+| Criterion | Requirement |
+|-----------|-------------|
+| **1.3.1 Info and Relationships** | Structure is programmatically determinable |
+| **1.3.2 Meaningful Sequence** | Reading order matches visual order |
+| **2.1.1 Keyboard** | All functionality operable via keyboard |
+| **2.2.1 Timing Adjustable** | Users can extend/disable time limits |
+| **2.2.2 Pause, Stop, Hide** | Moving content can be paused/stopped |
+| **2.4.3 Focus Order** | Focus order preserves meaning |
+| **3.2.5 Change on Request** | Context changes only on user request |
+| **4.1.2 Name, Role, Value** | All UI components have accessible name/role/value |
+
+---
+
+### Keyboard Navigation
+
+- [ ] **Tab key** moves focus to/through interactive carousel elements
+- [ ] **Tab does not trap** — after last focusable element, focus moves to next page element
+- [ ] **Arrow keys** navigate between slides (when carousel is focused)
+- [ ] **Enter/Space** activates focused controls (buttons, links)
+- [ ] **Escape** stops auto-rotation (if applicable)
+- [ ] **No infinite Tab loops** — user can always Tab out of carousel
+- [ ] **Hidden slides are not focusable** — off-screen content removed from tab order
+
+---
+
+### Auto-Rotation / Autoplay
+
+- [ ] **Pause/Play button provided** — visible, keyboard accessible
+- [ ] **Rotation stops on keyboard focus** — entering carousel halts movement
+- [ ] **Rotation stops on hover** — mouse over carousel pauses it
+- [ ] **Rotation stops on interaction** — clicking controls halts movement
+- [ ] **Explicit action to restart** — rotation doesn't auto-resume
+- [ ] **No auto-rotation preferred** — static carousels are more accessible
+- [ ] **If autoplay, minimum 5 seconds** — adequate time to read content
+
+---
+
+### Screen Reader Support
+
+- [ ] **Carousel has accessible name** — `aria-label` or `aria-labelledby`
+- [ ] **Carousel role is announced** — `aria-roledescription="carousel"`
+- [ ] **Slides have accessible names** — "Slide 1 of 5" pattern
+- [ ] **Slide changes are announced** — `aria-live="polite"` region
+- [ ] **Live announcements disabled during auto-rotation** — prevents constant interruptions
+- [ ] **Hidden slides are hidden from AT** — `aria-hidden="true"` or `inert`
+- [ ] **Controls have accessible names** — "Previous slide", "Next slide", "Go to slide 3"
+- [ ] **Current state is communicated** — `aria-current`, `aria-selected`, or `aria-disabled`
+
+---
+
+### ARIA Implementation
+
+**Carousel Container:**
+- [ ] `role="region"` or `role="group"`
+- [ ] `aria-roledescription="carousel"`
+- [ ] `aria-label="[Descriptive name]"`
+
+**Individual Slides:**
+- [ ] `role="group"`
+- [ ] `aria-roledescription="slide"`
+- [ ] `aria-label="[N] of [total]"` or similar
+
+**Navigation Controls:**
+- [ ] Previous/Next buttons have descriptive `aria-label`
+- [ ] Dot/pagination buttons indicate target slide
+- [ ] Current slide's control marked with `aria-disabled="true"` or `aria-current="true"`
+
+**Rotation Control:**
+- [ ] Dynamic `aria-label` reflects state ("Stop rotation" / "Start rotation")
+- [ ] Positioned as first focusable element in carousel
+
+---
+
+### Visual & Design
+
+- [ ] **3:1 minimum contrast ratio** for controls and indicators
+- [ ] **Visible focus indicators** — clear outline on focused elements
+- [ ] **Non-color focus indication** — border, outline, or shape change
+- [ ] **Adequate touch target size** — minimum 44x44px
+- [ ] **Current slide indicator** uses more than color alone
+- [ ] **Critical content not only in images** — text alternatives provided
+
+---
+
+### Content & Structure
+
+- [ ] **Semantic HTML** — use `<button>`, `<section>`, lists where appropriate
+- [ ] **Logical DOM order** — controls before slides in source
+- [ ] **Skip link provided** — allow users to bypass carousel
+- [ ] **Maximum 5 slides** — limit cognitive load
+- [ ] **Each slide has clear purpose** — meaningful content, not just decoration
+- [ ] **Links and CTAs are clear** — not just "Learn more"
+
+---
+
+### Testing Checklist
+
+- [ ] **Keyboard-only testing** — navigate entire carousel without mouse
+- [ ] **Screen reader testing** — VoiceOver (macOS/iOS), NVDA/JAWS (Windows), TalkBack (Android)
+- [ ] **Zoom testing** — 200% and 400% zoom levels
+- [ ] **Reduced motion testing** — `prefers-reduced-motion` honored
+- [ ] **High contrast mode testing** — Windows High Contrast Mode
+- [ ] **Axe/Lighthouse audit** — automated accessibility testing
+- [ ] **Manual WCAG review** — against 2.1 AA criteria
+
+---
+
+## Common A11y Issues and Fixes
+
+Recurring issues across carousel libraries, plus how we address them in this demo. For library-specific notes and implementation details, see each carousel page:
+
+- [Embla](/carousel/embla)
+- [Flicking](/carousel/flicking)
+- [React Responsive Carousel](/carousel/react-responsive)
+- [Siema](/carousel/siema)
+- [Swiper](/carousel/swiper)
+- [Flickity](/carousel/flickity)
+- [Keen Slider](/carousel/keen)
+- [tiny-slider](/carousel/tiny)
+- [React Slick](/carousel/react-slick)
+- [Splide](/carousel/splide)
+- [Glide.js](/carousel/glide)
+
+### Common issues
+
+- Hidden slides remain in the tab order
+- Missing or incorrect ARIA attributes
+- Focus management on slide change
+- Pagination dots not keyboard accessible
+
+### Our fixes
+
+- Focus trap prevention via `tabindex` management
+- Custom pagination with proper `aria-label` and `aria-current`
+- Controls positioned below the carousel (consistent, accessible)
+- Screen reader announcements via `aria-live` regions (Embla plugin)
+
+---
+
+## CSS-Only Carousels (Future)
+
+Chrome is developing native CSS carousel features with built-in accessibility:
+- Proper ARIA roles handled by browser
+- Keyboard navigation built-in
+- Screen reader support automatic
+- `scroll-state()` container queries for managing inert content
+
+**Status:** Experimental. Sara Soueidan's analysis notes current CSS carousels fail accessibility criteria and are unsuitable for production.
+
+**References:**
+- [Chrome DevRel: Carousels with CSS](https://developer.chrome.com/blog/carousels-with-css)
+- [Sara Soueidan: CSS Carousels Accessibility](https://www.sarasoueidan.com/blog/css-carousels-accessibility/)
+
+---
+
+## References
+
+### Standards & Guidelines
+- [W3C WAI Carousel Tutorial](https://www.w3.org/WAI/tutorials/carousels/)
+- [ARIA APG Carousel Pattern](https://www.w3.org/WAI/ARIA/apg/patterns/carousel/)
+- [Universal Design IE: Make Carousels Accessible](https://universaldesign.ie/communications-digital/web-and-mobile-accessibility/web-accessibility-techniques/developers-introduction-and-index/ensure-custom-widgets-are-accessible/make-carousels-accessible)
+
+### Analysis & Articles
+- [isitaccessible.dev](https://isitaccessible.dev/) — Package accessibility scoring
+- [Smashing Magazine: Guide to Building Accessible Carousels](https://www.smashingmagazine.com/2023/02/guide-building-accessible-carousels/)
+- [A11y Collective: Accessible Carousel](https://www.a11y-collective.com/blog/accessible-carousel/)
+- [a11y-101: Carousels](https://a11y-101.com/development/carousels)
+- [Sara Soueidan: CSS Carousels Accessibility](https://www.sarasoueidan.com/blog/css-carousels-accessibility/)
+
+### Implementation Resources
+- [Accessible Carousel Boilerplates](https://accessible360.github.io/accessible-carousel-boilerplates/)
+- [Chrome DevRel: Accessible Carousel](https://developer.chrome.com/blog/accessible-carousel)
+
+---
+
+## Conclusion
+
+**Use Embla Carousel** with its accessibility plugin for the best out-of-box accessibility:
+
+- Highest accessibility score (100%)
+- Dedicated, well-documented accessibility plugin
+- Supports vanilla JS and React natively (no wrapper needed)
+- Fast issue resolution (12.6 day median)
+- Implements proper ARIA live regions for screen reader announcements
+
+**Installation:**
+```bash
+# Vanilla JS (requires v9 RC for accessibility plugin)
+npm install embla-carousel@9.0.0-rc01 embla-carousel-accessibility@9.0.0-rc01
+
+# React (requires v9 RC for accessibility plugin)
+npm install embla-carousel-react@9.0.0-rc01 embla-carousel-accessibility@9.0.0-rc01
+```
+
+> **Note:** The accessibility plugin currently only supports Embla v9 (release candidate). The stable v8.x is incompatible with the accessibility plugin.
+
+**Always test with:**
+- Keyboard navigation (Tab, Arrow keys, Enter, Escape)
+- Screen readers (VoiceOver, NVDA, JAWS)
+- Automated tools (axe, Lighthouse)
+- Real users with disabilities when possible

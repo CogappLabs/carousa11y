@@ -1,0 +1,74 @@
+---
+id: flicking
+wcagStatus: pass
+fixesApplied:
+  - Accessible prev/next buttons
+  - Optional pagination buttons with aria-label and aria-current (if used)
+---
+
+## Summary
+
+- Prev/next controls provide the required accessible navigation
+- Optional pagination buttons (if used) should be labeled and reflect current state
+- Reactive API makes it easy to sync pagination state
+
+## Accessibility Analysis
+
+**Score:** 100% — All 2/2 accessibility-related GitHub issues resolved
+**Median resolution time:** 300 days
+
+### Strengths
+
+- Native support for: Vanilla JS, React, Vue, Angular, Svelte
+- All reported issues resolved
+
+### Concerns
+
+- Only 2 issues ever reported — limited real-world a11y testing
+- Past issues included keyboard tab navigation problems
+
+---
+
+## Our Implementation Notes
+
+Pagination is optional. If you include it, use buttons with `aria-label` and `aria-current`, since the library doesn't provide accessible pagination out of the box.
+
+### Pagination
+
+The `@egjs/flicking-plugins` Pagination plugin was unreliable. Better approach: use `connectFlickingReactiveAPI()` for custom pagination:
+
+```javascript
+import Flicking, { connectFlickingReactiveAPI } from '@egjs/flicking'
+
+const flicking = new Flicking('.viewport', { circular: true })
+const reactive = connectFlickingReactiveAPI(flicking)
+
+// Subscribe to index changes
+reactive.subscribe('currentPanelIndex', (index) => {
+  updateDots(index)
+})
+```
+
+### Swipe/Drag Configuration
+
+Requires explicit configuration for swipe to work:
+
+```javascript
+{
+  inputType: ['touch', 'mouse'],
+  moveType: 'snap',
+  preventDefaultOnDrag: true
+}
+```
+
+Must include `.flicking-camera` wrapper in HTML structure.
+
+### Animation Errors
+
+Clicking prev/next rapidly throws "Animation is already playing" errors. Fix by wrapping navigation calls:
+
+```javascript
+// Wrap in try/catch to handle rapid clicks
+flicking.prev().catch(() => {})
+flicking.next().catch(() => {})
+```

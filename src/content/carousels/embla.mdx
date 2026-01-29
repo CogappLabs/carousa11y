@@ -1,0 +1,72 @@
+---
+id: embla
+wcagStatus: pass
+fixesApplied:
+  - Accessible prev/next buttons and labeled pagination (optional)
+  - Using embla-carousel-accessibility plugin
+---
+
+## Summary
+
+- Accessibility plugin provides proper roles, labels, and live region announcements
+- Prev/next controls are the required accessible navigation; pagination buttons are optional
+
+## Accessibility Analysis
+
+**Score:** 100% — All 8/8 accessibility-related GitHub issues resolved
+**Median resolution time:** 12.6 days
+
+### Why Embla Wins
+
+- **Dedicated accessibility plugin** with comprehensive ARIA support
+- Native support for: Vanilla JS, React, Vue, Svelte, Solid
+- Fastest issue resolution among all libraries tested
+
+### Accessibility Plugin Features
+
+- Configurable carousel roles (`region` by default)
+- `aria-label` and `aria-roledescription` for carousel container
+- Slide roles with position/grouping labels ("Slide 1 of 3")
+- Navigation button labeling ("Go to previous Slide")
+- Dot button accessibility labels
+- **ARIA live region** for announcing slide changes to screen readers
+- Programmatic control via `setUpdateLiveRegion()`
+
+### Caveat
+
+The 100% score means all *reported* issues are closed—it doesn't guarantee perfect accessibility. Always test with real assistive technology.
+
+---
+
+## Our Implementation Notes
+
+Using `embla-carousel-accessibility` plugin for proper ARIA roles, slide labels, and live region announcements. Pagination is optional; if included, use labeled buttons with `aria-current`.
+
+### Version Compatibility
+
+- The `embla-carousel-accessibility` plugin **only works with v9.0.0-rc01**, not the stable v8.x releases
+- Using v8.x with the accessibility plugin causes `emblaApi.snapList is not a function` errors
+
+### API Changes in v9
+
+| v8.x | v9.x |
+|------|------|
+| `scrollPrev()` | `goToPrev()` |
+| `scrollNext()` | `goToNext()` |
+| `scrollTo(index)` | `goTo(index)` |
+| `selectedScrollSnap()` | `selectedSnap()` |
+
+### Setup Example
+
+```javascript
+import EmblaCarousel from 'embla-carousel'
+import { Accessibility } from 'embla-carousel-accessibility'
+
+const embla = EmblaCarousel(emblaNode, { loop: true }, [Accessibility()])
+```
+
+### Implementation Details
+
+- No built-in pagination; optional to add
+- Fully class-agnostic, works great with Tailwind
+- Excellent TypeScript support

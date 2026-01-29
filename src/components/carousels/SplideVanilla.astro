@@ -1,0 +1,25 @@
+---
+import { slides } from '../../data/slides'
+import Slide from '../Slide.astro'
+---
+
+<div class="splide" aria-label="Splide carousel">
+  <div class="splide__track">
+    <ul class="splide__list">
+      {slides.map((s) => (
+        <li class="splide__slide">
+          <Slide {...s} />
+        </li>
+      ))}
+    </ul>
+  </div>
+</div>
+
+<script>
+  async function initSplide() {
+    const Splide = (await import('@splidejs/splide')).default
+    new Splide('.splide', { type: 'loop', perPage: 1 }).mount()
+  }
+
+  initSplide()
+</script>

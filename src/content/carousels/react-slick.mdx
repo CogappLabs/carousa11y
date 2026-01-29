@@ -1,0 +1,81 @@
+---
+id: react-slick
+wcagStatus: pass
+fixesApplied:
+  - Custom controls (built-in dots use improper list structure if you include pagination)
+  - tabindex management for hidden slides
+  - Added aria-label to container
+---
+
+## Summary
+
+- Built-in dots use `li` elements with incorrect ARIA roles
+- `aria-hidden="true"` on inactive slides but focusable elements inside
+- Pagination is optional; if included, use custom buttons
+- Fix: custom controls + `tabindex` management via `useEffect`
+
+## Accessibility Analysis
+
+**Score:** 57.4% — 35/61 accessibility issues resolved
+**Median resolution time:** 558.8 days
+
+### Critical Issues
+
+- `aria-hidden="true"` combined with `tabindex="-1"` — breaks ARIA rules
+- Focus doesn't move properly through slides
+- TalkBack and VoiceOver report poor accessibility on mobile
+- **Oldest unresolved issue: 3,178 days (8+ years)**
+
+---
+
+## Our Implementation Notes
+
+Using custom controls. If you include pagination, built-in dots use improper list structure (`li` with `role="button"`). Managing `tabindex` on slide links to prevent focus traps.
+
+### The Focus Trap Problem
+
+React Slick sets `aria-hidden="true"` on inactive slides but doesn't manage tabindex on focusable elements inside. This creates a focus trap.
+
+### Our Fix
+
+```jsx
+useEffect(() => {
+  if (!containerRef.current) return
+  const slideElements = containerRef.current.querySelectorAll('.slick-slide')
+  slideElements.forEach((slide) => {
+    const focusables = slide.querySelectorAll('a, button, input, select, textarea')
+    const isActive = slide.classList.contains('slick-active')
+    focusables.forEach((el) => {
+      el.setAttribute('tabindex', isActive ? '0' : '-1')
+    })
+  })
+}, [currentSlide])
+```
+
+### Custom Controls
+
+Built-in dots use `<li>` elements with `role="button"`, which is invalid ARIA:
+
+```jsx
+<Slider
+  ref={sliderRef}
+  dots={false}     // Disable built-in dots
+  arrows={false}   // Disable built-in arrows
+  beforeChange={(_, next) => setCurrentSlide(next)}
+>
+  {/* slides */}
+</Slider>
+
+{/* Custom controls */}
+<button onClick={() => sliderRef.current?.slickPrev()}>Previous</button>
+<button onClick={() => sliderRef.current?.slickNext()}>Next</button>
+
+{/* Custom dots with proper ARIA */}
+{slides.map((_, i) => (
+  <button
+    onClick={() => sliderRef.current?.slickGoTo(i)}
+    aria-label={`Go to slide ${i + 1}`}
+    aria-current={i === currentSlide ? 'true' : undefined}
+  />
+))}
+```

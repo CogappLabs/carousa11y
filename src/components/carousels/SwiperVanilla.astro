@@ -1,0 +1,46 @@
+---
+import { slides } from '../../data/slides'
+import Slide from '../Slide.astro'
+---
+
+<div class="swiper">
+  <div class="swiper-wrapper">
+    {slides.map((s) => (
+      <div class="swiper-slide">
+        <Slide {...s} />
+      </div>
+    ))}
+  </div>
+</div>
+<div class="flex justify-center gap-4 mt-4">
+  <button type="button" id="swiper-prev" class="carousel-btn">Previous</button>
+  <button type="button" id="swiper-next" class="carousel-btn">Next</button>
+</div>
+<div id="swiper-pagination" class="flex justify-center gap-2 mt-4"></div>
+
+<script>
+  async function initSwiper() {
+    const Swiper = (await import('swiper')).default
+    const { Navigation, Pagination, A11y } = await import('swiper/modules')
+
+    new Swiper('.swiper', {
+      modules: [Navigation, Pagination, A11y],
+      loop: true,
+      pagination: {
+        el: '#swiper-pagination',
+        clickable: true,
+        bulletClass: 'swiper-dot',
+        bulletActiveClass: 'swiper-dot-active',
+      },
+      navigation: { nextEl: '#swiper-next', prevEl: '#swiper-prev' },
+      a11y: {
+        enabled: true,
+        prevSlideMessage: 'Previous slide',
+        nextSlideMessage: 'Next slide',
+        paginationBulletMessage: 'Go to slide {{index}}',
+      },
+    })
+  }
+
+  initSwiper()
+</script>

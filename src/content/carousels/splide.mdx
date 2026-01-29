@@ -1,0 +1,66 @@
+---
+id: splide
+wcagStatus: minor
+fixesApplied:
+  - Library-level issues cannot be easily fixed
+---
+
+## Summary
+
+- Markets itself as "accessible" but scores only 53.8%
+- Uses `role="tabpanel"` on `<li>` elements (minor ARIA role issue)
+- Uses `aria-selected` instead of `aria-current` for pagination
+- Library-level issues that can’t be easily fixed
+
+## Accessibility Analysis
+
+**Score:** 53.8% — 28/52 accessibility issues resolved
+**Median resolution time:** 148.8 days
+
+### Despite Marketing as Accessible
+
+Splide markets itself as "the accessible slider" but has critical issues:
+
+- Inactive pagination items unreachable via Tab key
+- `destroy()` doesn't remove `tabindex="-1"`, breaking keyboard nav
+- Custom `aria-label` attributes stripped
+- Incorrect `aria-orientation` values (flagged in professional audits)
+- Chrome's `aria-hidden` restrictions prevent proper focus management
+
+### Recommendation
+
+The accessible-carousel-boilerplates project notes Splide could be "the most accessible package" but requires avoiding `keyboard` and `slideFocus` options.
+
+---
+
+## Our Implementation Notes
+
+Splide uses `role="tabpanel"` on `<li>` elements (minor ARIA role issue). Built-in pagination uses `aria-selected` instead of `aria-current`.
+
+### Library-Level Issues
+
+These issues are in the library itself and can't be easily fixed:
+- Uses `role="tabpanel"` on `<li>` elements (minor ARIA role violation)
+- Uses `aria-selected` instead of the more appropriate `aria-current` for pagination
+- Tab key behavior inconsistent
+
+### W3C Compliance
+
+Despite the issues above, Splide vanilla scores **100%** on our W3C manual audit due to:
+- Proper slide roles and labels
+- Live region for screen reader announcements
+- `aria-label` on slides ("1 of 3" pattern)
+
+### Setup
+
+```javascript
+new Splide('.splide', {
+  type: 'loop',
+  perPage: 1,
+  // Avoid these options for better a11y:
+  // keyboard: false,
+  // slideFocus: false,
+}).mount()
+```
+
+The built-in controls work reasonably well—we didn't need to implement custom controls for this library.

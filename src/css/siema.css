@@ -1,0 +1,8 @@
+/* Siema - library requires .siema class */
+.siema {
+  @apply overflow-hidden;
+}
+
+.siema-slide {
+  @apply px-4;
+}

@@ -1,0 +1,47 @@
+/* Shared prose styling for MD/MDX content */
+.prose table {
+  @apply w-full text-sm;
+}
+.prose th {
+  @apply bg-stone-200 text-left p-2;
+}
+.prose td {
+  @apply p-2 border-b border-stone-200;
+}
+.prose h2 {
+  @apply mt-10 mb-4 text-2xl font-bold border-b-2 border-stone-200 pb-2;
+}
+.prose h3 {
+  @apply mt-6 mb-3 text-lg font-semibold;
+}
+.prose ul {
+  @apply my-4;
+}
+.prose li {
+  @apply my-1;
+}
+.prose blockquote {
+  @apply border-l-4 border-amber-500 bg-amber-50 pl-4 py-2 italic;
+}
+.prose hr {
+  @apply my-8 border-stone-300;
+}
+
+/* TOC styling (remark-toc output after "Contents" heading) */
+.prose #contents + ul {
+  @apply my-4 pl-6;
+}
+.prose #contents + ul ul {
+  @apply mt-2 pl-6;
+}
+.prose #contents + ul li {
+  @apply my-2;
+}
+.prose #contents + ul a {
+  @apply underline underline-offset-4 text-amber-700;
+  text-decoration-line: underline;
+  text-decoration-thickness: 2px;
+}
+.prose #contents + ul > li > a {
+  @apply inline-block;
+}

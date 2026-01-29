@@ -1,0 +1,69 @@
+---
+id: swiper
+wcagStatus: pass
+fixesApplied:
+  - Custom controls below carousel
+  - Optional paginationBulletMessage for screen readers (if used)
+---
+
+## Summary
+
+- Built-in A11y module with good defaults
+- Most feature-complete out of the box
+- Custom controls recommended - moved buttons below carousel
+- Pagination is optional; if included, use `paginationBulletMessage: 'Go to slide {{index}}'`
+
+## Accessibility Analysis
+
+**Score:** 84.9% — 124/146 accessibility issues resolved
+**Median resolution time:** 9.4 days
+
+### Strengths
+
+- Active maintenance
+- Fast issue resolution
+- Built-in A11y module with good defaults
+- Most feature-complete out of the box
+
+### Critical Open Issues
+
+- Infinite loops when tabbing through sliders
+- Broken tab key behavior with links inside slides
+- `aria-live` announcements fail on touch/click events
+- Redundant `aria-disabled` alongside native `disabled` attributes
+- Pagination shows `NaN` in aria-labels (loop mode)
+- Shadow DOM accessibility conflicts
+
+---
+
+## Our Implementation Notes
+
+Using custom controls below carousel. Added `paginationBulletMessage` for screen reader announcements.
+
+### A11y Module Setup
+
+```javascript
+{
+  modules: [Navigation, Pagination, A11y],
+  a11y: {
+    enabled: true,
+    prevSlideMessage: 'Previous slide',
+    nextSlideMessage: 'Next slide',
+    paginationBulletMessage: 'Go to slide {{index}}',
+  },
+  pagination: {
+    el: '#pagination',
+    clickable: true,
+    bulletClass: 'swiper-dot',
+    bulletActiveClass: 'swiper-dot-active',
+  }
+}
+```
+
+### Why Custom Controls
+
+Built-in arrow buttons appear as overlays on the carousel, which can be visually confusing. We moved controls below the carousel for consistency with other libraries and better touch target accessibility.
+
+### Live Region
+
+Swiper's A11y module includes a live region for screen reader announcements—one of the few libraries with this feature built-in.

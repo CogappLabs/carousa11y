@@ -1,0 +1,4 @@
+/* Splide - classes CAN be customized via classes config object */
+.splide__slide {
+  @apply px-4;
+}

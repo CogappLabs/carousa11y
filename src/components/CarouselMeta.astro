@@ -1,0 +1,212 @@
+---
+interface Props {
+  score: string
+  version: string
+  stars: string
+  notes: string
+  github: string
+  demo?: string
+  npm: string
+  nav: string
+  dots: string
+}
+
+const { score, version, stars, notes, github, demo, npm, nav, dots } = Astro.props
+
+const isitaccessibleUrl = `https://isitaccessible.dev/package/${encodeURIComponent(npm)}`
+
+const navLabels: Record<string, string> = {
+  below: 'Below carousel',
+  overlay: 'Overlay on slides',
+  'built-in': 'Built-in controls',
+}
+
+const dotsLabels: Record<string, string> = {
+  custom: 'Custom (DIY)',
+  'built-in': 'Built-in',
+  plugin: 'Plugin required',
+  component: 'Component provided',
+}
+---
+
+<div class="carousel-meta">
+  <div class="meta-grid">
+    <div class="meta-item">
+      <span class="meta-label">A11y Score</span>
+      <span class="meta-value">
+        <a href={isitaccessibleUrl} target="_blank" rel="noopener" title="View on isitaccessible.dev">
+          {score}
+        </a>
+      </span>
+    </div>
+    <div class="meta-item">
+      <span class="meta-label">Version Tested</span>
+      <span class="meta-value">{version}</span>
+    </div>
+    <div class="meta-item">
+      <span class="meta-label">GitHub Stars</span>
+      <span class="meta-value">{stars}</span>
+    </div>
+    <div class="meta-item">
+      <span class="meta-label">Nav Style</span>
+      <span class="meta-value">{navLabels[nav] || nav}</span>
+    </div>
+    <div class="meta-item">
+      <span class="meta-label">Dots/Pagination</span>
+      <span class="meta-value">{dotsLabels[dots] || dots}</span>
+    </div>
+  </div>
+  <p class="meta-notes">{notes}</p>
+  <div class="meta-links">
+    <a href={github} target="_blank" rel="noopener">View on GitHub →</a>
+    {demo && <a href={demo} target="_blank" rel="noopener">View Demo →</a>}
+    <button type="button" id="run-axe" class="axe-btn">Run Accessibility Test</button>
+  </div>
+  <div id="axe-results"></div>
+</div>
+
+<style>
+  .carousel-meta {
+    background: #f5f5f4;
+    border-radius: 0.5rem;
+    padding: 1rem;
+    margin-bottom: 1.5rem;
+    font-size: 0.875rem;
+  }
+
+  .meta-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+    gap: 0.75rem 1.5rem;
+    margin-bottom: 0.75rem;
+  }
+
+  .meta-item {
+    display: flex;
+    flex-direction: column;
+    gap: 0.125rem;
+  }
+
+  .meta-label {
+    font-size: 0.7rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    color: #57534e;
+  }
+
+  .meta-value {
+    font-weight: 500;
+    color: #1c1917;
+  }
+
+  .meta-value a {
+    color: #1c1917;
+    text-decoration: none;
+    font-weight: 600;
+  }
+
+  .meta-value a:hover {
+    text-decoration: underline;
+  }
+
+  .meta-notes {
+    margin: 0 0 0.75rem 0;
+    color: #57534e;
+    font-style: italic;
+  }
+
+  .meta-links {
+    display: flex;
+    gap: 1.5rem;
+  }
+
+  .meta-links a {
+    color: #44403c;
+    text-decoration: none;
+    font-weight: 500;
+  }
+
+  .meta-links a:hover {
+    text-decoration: underline;
+  }
+
+  .axe-btn {
+    background: #292524;
+    color: white;
+    border: none;
+    padding: 0.375rem 0.75rem;
+    border-radius: 0.25rem;
+    font-size: 0.875rem;
+    font-weight: 500;
+    cursor: pointer;
+    margin-left: auto;
+  }
+
+  .axe-btn:hover {
+    background: #44403c;
+  }
+
+  .axe-btn:focus {
+    outline: 2px solid #f59e0b;
+    outline-offset: 2px;
+  }
+
+  .axe-btn:disabled {
+    background: #a8a29e;
+    cursor: wait;
+  }
+</style>
+
+<script>
+  const axeBtn = document.getElementById('run-axe')
+  const axeResults = document.getElementById('axe-results')
+
+  if (axeBtn && axeResults) {
+    axeBtn.addEventListener('click', async () => {
+      axeBtn.textContent = 'Running...'
+      axeBtn.setAttribute('disabled', 'true')
+
+      try {
+        const axe = (await import('axe-core')).default
+        const results = await axe.run('.carousel-section')
+
+        if (results.violations.length === 0) {
+          axeResults.innerHTML = `
+            <h3 class="pass">No accessibility violations found!</h3>
+            <p>This carousel passed all ${results.passes.length} axe-core checks.</p>
+          `
+        } else {
+          let html = `<h3 class="error">${results.violations.length} Accessibility Violation${results.violations.length > 1 ? 's' : ''}</h3>`
+          html += '<table><thead><tr><th>Impact</th><th>Issue</th><th>Elements</th></tr></thead><tbody>'
+
+          for (const v of results.violations) {
+            html += `<tr>
+              <td><span class="impact-${v.impact}">${v.impact}</span></td>
+              <td><strong>${v.id}</strong>: ${v.help}</td>
+              <td>${v.nodes.length} element${v.nodes.length > 1 ? 's' : ''}</td>
+            </tr>`
+          }
+          html += '</tbody></table>'
+
+          for (const v of results.violations) {
+            html += `<details>
+              <summary><strong>${v.id}</strong>: ${v.help}</summary>
+              <p>${v.description}</p>
+              <p><a href="${v.helpUrl}" target="_blank" rel="noopener">Learn more</a></p>
+              <ul>
+                ${v.nodes.map(n => `<li><code>${n.target[0]}</code><br>${n.failureSummary}</li>`).join('')}
+              </ul>
+            </details>`
+          }
+
+          axeResults.innerHTML = html
+        }
+      } catch (err) {
+        axeResults.innerHTML = `<p class="error">Error running axe: ${err}</p>`
+      }
+
+      axeBtn.textContent = 'Run Accessibility Test'
+      axeBtn.removeAttribute('disabled')
+    })
+  }
+</script>

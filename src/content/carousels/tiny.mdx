@@ -1,0 +1,73 @@
+---
+id: tiny
+wcagStatus: pass
+fixesApplied:
+  - Custom prev/next buttons (built-in nav has tabindex issues)
+  - tabindex management for cloned slides
+  - Fixed nav button tabindex after init
+  - Added aria-label to container
+---
+
+## Summary
+
+- Built-in nav has `tabindex="-1"` making controls unreachable
+- Cloned slides for loop mode cause focus traps
+- Fix: custom prev/next + `tabindex` management on cloned slide focusables
+
+## Accessibility Analysis
+
+**Score:** 58.5% — 24/41 accessibility issues resolved
+**Median resolution time:** 80.2 days
+
+### Critical Open Issues (17)
+
+- Arrow key navigation affects ALL sliders on page simultaneously
+- aria-live announces wrong slide counts ("slide 6 of 5")
+- Navigation buttons have `tabindex="-1"` — unreachable by keyboard
+- ARIA attributes don't match their roles
+
+---
+
+## Our Implementation Notes
+
+Using custom nav buttons for accessible controls. Built-in controls have `tabindex="-1"` and `aria-label` issues. Pagination is optional; if included, ensure buttons are labeled and reflect the current state.
+
+### The tabindex Problem
+
+tiny-slider sets `tabindex="-1"` on buttons in the `controlsContainer`, making them unreachable by keyboard. We fix this after initialization:
+
+```javascript
+setTimeout(() => {
+  const controlButtons = document.querySelectorAll('#controls button')
+  controlButtons.forEach((btn) => btn.removeAttribute('tabindex'))
+}, 100)
+```
+
+### Cloned Slides Focus Trap
+
+In loop mode, tiny-slider clones slides at the beginning and end. Focusable elements in these clones create focus traps:
+
+```javascript
+const updateFocusableElements = () => {
+  const allSlides = document.querySelectorAll('.tns-item')
+  allSlides.forEach((slide) => {
+    const isActive = slide.classList.contains('tns-slide-active')
+    const focusables = slide.querySelectorAll('a, button')
+    focusables.forEach((el) => {
+      el.setAttribute('tabindex', isActive ? '0' : '-1')
+    })
+  })
+}
+```
+
+### Slide Index Calculation
+
+tiny-slider's `indexChanged` event returns DOM index including clones. Use `displayIndex` for the actual slide number:
+
+```javascript
+slider.events.on('indexChanged', (info) => {
+  // displayIndex is 1-based
+  const realIndex = (info.displayIndex - 1) % totalSlides
+  updateDots(realIndex)
+})
+```

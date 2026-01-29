@@ -1,0 +1,13 @@
+/* Flicking - library requires these class names */
+.flicking-viewport {
+  @apply overflow-hidden;
+}
+
+.flicking-camera {
+  @apply flex;
+}
+
+.flicking-panel {
+  @apply shrink-0 px-4;
+  width: 100%;
+}
