@@ -1,4 +1,5 @@
 /* Flickity - class names cannot be customized (hardcoded) */
+@reference "tailwindcss";
 .flickity-slide {
   @apply w-full px-4;
 }

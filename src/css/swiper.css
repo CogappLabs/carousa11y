@@ -1,4 +1,5 @@
 /* Swiper - classes CAN be customized via config options */
+@reference "tailwindcss";
 .swiper-slide {
   @apply px-4;
 }

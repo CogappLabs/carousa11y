@@ -1,4 +1,5 @@
 /* Flicking - library requires these class names */
+@reference "tailwindcss";
 .flicking-viewport {
   @apply overflow-hidden;
 }

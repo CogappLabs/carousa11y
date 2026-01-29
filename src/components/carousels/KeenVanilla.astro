@@ -27,30 +27,18 @@ import Slide from '../Slide.astro'
 </div>
 
 <script>
+  import { updateDots, setCarouselReady } from '../../utils/carousel'
+
   async function initKeen() {
     const KeenSlider = (await import('keen-slider')).default
     const dots = document.querySelectorAll('.keen-dot')
 
-    const updateDots = (index: number) => {
-      dots.forEach((dot, i) => {
-        const isActive = i === index
-        dot.classList.toggle('bg-stone-800', isActive)
-        dot.classList.toggle('bg-stone-300', !isActive)
-        dot.classList.toggle('hover:bg-stone-400', !isActive)
-        dot.setAttribute('aria-current', isActive ? 'true' : 'false')
-      })
-    }
-
-    const sliderEl = document.getElementById('keen-slider')
     const keenSlider = new KeenSlider('#keen-slider', {
       loop: true,
-      slideChanged: (s) => {
-        updateDots(s.track.details.rel)
-      },
+      slideChanged: (s) => updateDots(dots, s.track.details.rel),
     })
 
-    sliderEl?.classList.remove('carousel-loading')
-    sliderEl?.classList.add('carousel-ready')
+    setCarouselReady(document.getElementById('keen-slider'))
 
     document.getElementById('keen-prev')?.addEventListener('click', () => keenSlider.prev())
     document.getElementById('keen-next')?.addEventListener('click', () => keenSlider.next())

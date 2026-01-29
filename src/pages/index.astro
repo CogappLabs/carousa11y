@@ -19,11 +19,11 @@ const carousels = Object.entries(carouselData).sort((a, b) => {
     <p class="m-0 mb-6 text-stone-300">
       Compare accessibility scores and features of popular carousel libraries.
       <br />
-      Scores from <a href="https://isitaccessible.dev" class="text-amber-400 hover:underline" target="_blank" rel="noopener">isitaccessible.dev</a>
+      Scores from <a href="https://isitaccessible.dev" class="text-amber-400 underline underline-offset-2 hover:text-amber-300 focus:outline-none focus:ring-2 focus:ring-amber-400 focus:ring-offset-2 focus:ring-offset-stone-900 rounded-sm" target="_blank" rel="noopener">isitaccessible.dev<span class="sr-only"> (opens in new tab)</span></a>
     </p>
 
     <div class="flex gap-4 justify-center">
-      <a href={`${import.meta.env.BASE_URL}/research`} class="btn-primary-invert">View Full Research</a>
+      <a href={`${import.meta.env.BASE_URL}/research`} class="bg-amber-400 text-stone-900 px-6 py-3 text-base rounded font-semibold no-underline hover:bg-amber-300 focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-stone-900">View Full Research</a>
     </div>
   </header>
 
@@ -32,7 +32,7 @@ const carousels = Object.entries(carouselData).sort((a, b) => {
       {carousels.map(([id, data]) => (
         <a
           href={`${import.meta.env.BASE_URL}/carousel/${id}`}
-          class="block bg-white rounded-lg p-6 shadow-md hover:shadow-lg transition-shadow no-underline text-stone-900 border-2 border-transparent hover:border-amber-400 focus:border-amber-400 focus:outline-none"
+          class="block bg-white rounded-lg p-6 shadow-md hover:shadow-lg transition-shadow no-underline text-stone-900 border-2 border-transparent hover:border-amber-400 focus:border-amber-400 focus:outline-none focus:ring-2 focus:ring-amber-400 focus:ring-offset-2"
         >
           <div class="flex items-start justify-between mb-2">
             <h2 class="m-0 text-lg font-bold">{data.name}</h2>

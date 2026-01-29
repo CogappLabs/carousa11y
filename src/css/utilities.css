@@ -1,0 +1,32 @@
+/* Shared utility classes */
+@reference "tailwindcss";
+
+/* Screen reader only text */
+.sr-only {
+  @apply absolute w-px h-px p-0 -m-px overflow-hidden whitespace-nowrap border-0;
+  clip: rect(0, 0, 0, 0);
+}
+
+/* Skip to main content link */
+.skip-link {
+  @apply absolute -top-10 left-0 bg-stone-900 text-white px-4 py-2 z-50 no-underline focus:top-0;
+}
+
+/* Carousel control buttons */
+.carousel-btn {
+  @apply bg-stone-800 text-white border-none py-2 px-4 rounded cursor-pointer;
+  @apply hover:bg-stone-700;
+  @apply focus:outline-none focus:ring-2 focus:ring-amber-500 focus:ring-offset-2;
+}
+
+/* Header navigation links */
+.header-link {
+  @apply text-white underline underline-offset-4;
+  text-decoration-thickness: 1px;
+}
+.header-link:hover {
+  @apply text-amber-400;
+}
+.header-link:focus {
+  @apply outline-none ring-2 ring-amber-400 ring-offset-2 ring-offset-stone-900 rounded-sm;
+}

@@ -12,7 +12,7 @@ const { img, alt, title, text, link, class: className = '' } = Astro.props
 ---
 
 <div class={className} role="group" aria-roledescription="slide">
-  <img src={img} alt={alt} />
+  <img src={img} alt={alt} width="400" height="200" loading="lazy" decoding="async" />
   <h3>{title}</h3>
   <p>{text}</p>
   <span class="text-stone-700 underline">{link}</span>

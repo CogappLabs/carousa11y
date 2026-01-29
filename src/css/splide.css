@@ -1,4 +1,5 @@
 /* Splide - classes CAN be customized via classes config object */
+@reference "tailwindcss";
 .splide__slide {
   @apply px-4;
 }

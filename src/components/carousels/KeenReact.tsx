@@ -23,6 +23,10 @@ export default function KeenReact() {
             <img
               src={slide.img}
               alt={slide.alt}
+              width={400}
+              height={200}
+              loading="lazy"
+              decoding="async"
               className="w-full h-52 object-cover rounded"
             />
             <h3 className="mt-4 mb-2 text-xl">{slide.title}</h3>

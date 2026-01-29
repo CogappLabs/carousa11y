@@ -50,7 +50,14 @@ export default function ReactSlickCarousel() {
             role="group"
             aria-roledescription="slide"
           >
-            <img src={slide.img} alt={slide.alt} />
+            <img
+              src={slide.img}
+              alt={slide.alt}
+              width={400}
+              height={200}
+              loading="lazy"
+              decoding="async"
+            />
             <h3>{slide.title}</h3>
             <p>{slide.text}</p>
             <span className="text-stone-700 underline">{slide.link}</span>

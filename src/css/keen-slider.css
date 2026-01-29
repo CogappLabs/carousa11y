@@ -1,4 +1,5 @@
 /* Keen Slider - library-generated class */
+@reference "tailwindcss";
 .keen-slider__slide {
   @apply px-4;
 }

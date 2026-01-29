@@ -46,6 +46,9 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site || 'https://example.
 
 <style is:global>
   @import "tailwindcss";
+  @import "../css/utilities.css";
+  @import "../css/prose.css";
+  /* Carousel library overrides - required due to fixed class names */
   @import "../css/swiper.css";
   @import "../css/splide.css";
   @import "../css/glide.css";
@@ -55,57 +58,6 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site || 'https://example.
   @import "../css/flicking.css";
   @import "../css/siema.css";
   @import "../css/react.css";
-  @import "../css/prose.css";
-
-  @utility carousel-btn {
-    background-color: var(--color-stone-800);
-    color: white;
-    border: none;
-    padding: 0.5rem 1rem;
-    border-radius: 0.25rem;
-    cursor: pointer;
-    &:hover {
-      background-color: var(--color-stone-700);
-    }
-    &:focus {
-      outline: none;
-      box-shadow:
-        0 0 0 2px var(--color-amber-500),
-        0 0 0 4px white;
-    }
-  }
-
-  .skip-link {
-    @apply absolute -top-10 left-0 bg-stone-900 text-white px-4 py-2 z-50 no-underline focus:top-0;
-  }
-
-  .nav-btn {
-    @apply text-white bg-stone-700 px-4 py-2 rounded border-2 border-transparent text-sm cursor-pointer flex items-center gap-2;
-    @apply hover:bg-stone-600 hover:border-amber-400;
-    @apply focus:bg-stone-600 focus:border-amber-400 focus:outline-none focus:ring-2 focus:ring-amber-400 focus:ring-offset-2 focus:ring-offset-stone-900;
-    &.active {
-      @apply bg-amber-600 border-white;
-    }
-  }
-
-  .btn-primary {
-    @apply bg-stone-800 text-white border-none px-6 py-3 text-base rounded cursor-pointer font-semibold;
-    @apply hover:bg-stone-700 focus:outline-none focus:ring-2 focus:ring-amber-400 focus:ring-offset-2 focus:ring-offset-stone-900;
-  }
-
-  .btn-primary-invert {
-    @apply bg-amber-400 text-stone-900 border-none px-6 py-3 text-base rounded cursor-pointer font-semibold;
-    @apply hover:bg-amber-300 focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-stone-900;
-  }
-
-  .btn-secondary {
-    @apply bg-stone-600 text-white border-none px-6 py-3 text-base rounded cursor-pointer;
-    @apply hover:bg-stone-500 focus:outline-none focus:ring-2 focus:ring-amber-400 focus:ring-offset-2 focus:ring-offset-stone-900;
-  }
-
-  .placeholder {
-    @apply text-center py-16 px-8 text-stone-500 text-lg;
-  }
 
   .carousel-section {
     @apply bg-white rounded-lg p-8 mb-8 shadow-md;
@@ -125,7 +77,8 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site || 'https://example.
       @apply m-0 mb-3 text-stone-600;
     }
     a {
-      @apply text-stone-700 underline hover:text-stone-900 focus:text-stone-900;
+      @apply text-stone-700 underline underline-offset-2 hover:text-stone-900;
+      @apply focus:outline-none focus:ring-2 focus:ring-amber-500 focus:ring-offset-2 focus:rounded-sm;
     }
   }
 
@@ -148,10 +101,6 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site || 'https://example.
     h3, p, a {
       @apply text-inherit;
     }
-  }
-
-  .version-toggle {
-    @apply flex justify-center gap-1 mb-4;
   }
 
   .toggle-btn {
@@ -197,6 +146,10 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site || 'https://example.
     }
     code {
       @apply bg-stone-200 px-1 py-0.5 rounded text-sm;
+    }
+    a {
+      @apply text-amber-700 underline underline-offset-2 hover:text-amber-900;
+      @apply focus:outline-none focus:ring-2 focus:ring-amber-500 focus:ring-offset-2 focus:rounded-sm;
     }
     .pass {
       @apply text-green-700 font-semibold;

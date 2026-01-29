@@ -1,4 +1,5 @@
 /* Siema - library requires .siema class */
+@reference "tailwindcss";
 .siema {
   @apply overflow-hidden;
 }

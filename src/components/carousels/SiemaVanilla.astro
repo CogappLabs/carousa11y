@@ -27,19 +27,11 @@ import Slide from '../Slide.astro'
 </div>
 
 <script>
+  import { updateDots, setCarouselReady } from '../../utils/carousel'
+
   async function initSiema() {
     const Siema = (await import('siema')).default
     const dots = document.querySelectorAll('.siema-dot')
-
-    const updateDots = (index: number) => {
-      dots.forEach((dot, i) => {
-        const isActive = i === index
-        dot.classList.toggle('bg-stone-800', isActive)
-        dot.classList.toggle('bg-stone-300', !isActive)
-        dot.classList.toggle('hover:bg-stone-400', !isActive)
-        dot.setAttribute('aria-current', isActive ? 'true' : 'false')
-      })
-    }
 
     const siemaEl = document.querySelector('.siema')
     const siema = new Siema({
@@ -48,12 +40,11 @@ import Slide from '../Slide.astro'
       draggable: true,
       threshold: 20,
       onChange: function (this: any) {
-        updateDots(this.currentSlide)
+        updateDots(dots, this.currentSlide)
       },
     })
     siemaEl?.classList.add('siema-initialized')
-    siemaEl?.classList.remove('carousel-loading')
-    siemaEl?.classList.add('carousel-ready')
+    setCarouselReady(siemaEl)
 
     document.querySelector('.siema-prev')?.addEventListener('click', () => siema.prev())
     document.querySelector('.siema-next')?.addEventListener('click', () => siema.next())
@@ -62,7 +53,7 @@ import Slide from '../Slide.astro'
       dot.addEventListener('click', () => {
         const index = Number(dot.getAttribute('data-index'))
         siema.goTo(index)
-        updateDots(index)
+        updateDots(dots, index)
       })
     })
   }

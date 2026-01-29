@@ -1,4 +1,5 @@
 /* React carousels - styling for nested elements we can't add classes to */
+@reference "tailwindcss";
 .react-slide {
   @apply px-4;
 

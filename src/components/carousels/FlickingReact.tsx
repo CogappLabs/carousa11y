@@ -44,6 +44,10 @@ export default function FlickingReact() {
             <img
               src={slide.img}
               alt={slide.alt}
+              width={400}
+              height={200}
+              loading="lazy"
+              decoding="async"
               className="w-full h-52 object-cover rounded"
             />
             <h3 className="mt-4 mb-2 text-xl">{slide.title}</h3>
@@ -66,9 +70,9 @@ export default function FlickingReact() {
             key={i}
             type="button"
             onClick={() => goTo(i)}
-            className={`w-3 h-3 rounded-full border-none p-0 cursor-pointer ${i === selectedIndex ? 'bg-stone-800' : 'bg-stone-300'}`}
+            className={`w-3 h-3 rounded-full border-none p-0 cursor-pointer focus:outline-none focus:ring-2 focus:ring-amber-500 focus:ring-offset-2 ${i === selectedIndex ? 'bg-stone-800' : 'bg-stone-300'}`}
             aria-label={`Go to slide ${i + 1}`}
-            aria-current={i === selectedIndex ? 'true' : 'false'}
+            aria-current={i === selectedIndex ? 'true' : undefined}
           />
         ))}
       </div>

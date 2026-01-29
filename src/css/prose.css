@@ -1,4 +1,21 @@
 /* Shared prose styling for MD/MDX content */
+@reference "tailwindcss";
+
+/* Link styles with proper accessibility */
+.prose a {
+  @apply text-amber-700 underline underline-offset-4;
+  text-decoration-thickness: 2px;
+}
+.prose a:hover {
+  @apply text-amber-900;
+}
+.prose a:focus {
+  @apply outline-none ring-2 ring-amber-500 ring-offset-2 rounded-sm;
+}
+.prose a:visited {
+  @apply text-amber-800;
+}
+
 .prose table {
   @apply w-full text-sm;
 }

@@ -38,12 +38,12 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site || 'https://example.
 
     <header class="bg-stone-900 text-white p-6">
       <div class="max-w-4xl mx-auto flex items-center justify-between">
-        <a href={import.meta.env.BASE_URL} class="text-white no-underline hover:text-amber-400">← Back to Demo</a>
+        <a href={import.meta.env.BASE_URL} class="header-link">← Back to Demo</a>
         <span class="text-xl font-bold">Research</span>
       </div>
     </header>
 
-    <main id="main" class="max-w-4xl mx-auto p-8 prose prose-stone prose-headings:text-stone-900 prose-a:text-amber-700 prose-a:underline prose-a:underline-offset-4 prose-code:bg-stone-200 prose-code:px-1 prose-code:rounded">
+    <main id="main" class="max-w-4xl mx-auto p-8 prose prose-stone prose-headings:text-stone-900 prose-code:bg-stone-200 prose-code:px-1 prose-code:rounded">
       <slot />
     </main>
   </body>
@@ -51,9 +51,6 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site || 'https://example.
 
 <style is:global>
   @import "tailwindcss";
+  @import "../css/utilities.css";
   @import "../css/prose.css";
-
-  .skip-link {
-    @apply absolute -top-10 left-0 bg-stone-900 text-white px-4 py-2 z-50 no-underline focus:top-0;
-  }
 </style>

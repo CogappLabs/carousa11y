@@ -29,29 +29,12 @@ import 'flickity/css/flickity.css'
 </div>
 
 <script>
+  import { updateDots, updateSlideFocus, setCarouselReady } from '../../utils/carousel'
+
   async function initFlickity() {
     const Flickity = (await import('flickity')).default
     const dots = document.querySelectorAll('.flickity-dot')
     const slides = document.querySelectorAll('.flickity-slide')
-
-    const updateFocusableElements = (selectedIndex: number) => {
-      slides.forEach((slide, i) => {
-        const focusables = slide.querySelectorAll('a, button, input, select, textarea')
-        focusables.forEach((el) => {
-          el.setAttribute('tabindex', i === selectedIndex ? '0' : '-1')
-        })
-      })
-    }
-
-    const updateDots = (index: number) => {
-      dots.forEach((dot, i) => {
-        const isActive = i === index
-        dot.classList.toggle('bg-stone-800', isActive)
-        dot.classList.toggle('bg-stone-300', !isActive)
-        dot.classList.toggle('hover:bg-stone-400', !isActive)
-        dot.setAttribute('aria-current', isActive ? 'true' : 'false')
-      })
-    }
 
     const carouselEl = document.querySelector('.flickity-carousel')
     const flkty = new Flickity('.flickity-carousel', {
@@ -63,15 +46,12 @@ import 'flickity/css/flickity.css'
       accessibility: true,
     })
 
-    carouselEl?.classList.remove('carousel-loading')
-    carouselEl?.classList.add('carousel-ready')
-
-    // Initial focus setup
-    updateFocusableElements(0)
+    setCarouselReady(carouselEl)
+    updateSlideFocus(slides, (_, i) => i === 0)
 
     flkty.on('select', () => {
-      updateFocusableElements(flkty.selectedIndex)
-      updateDots(flkty.selectedIndex)
+      updateSlideFocus(slides, (_, i) => i === flkty.selectedIndex)
+      updateDots(dots, flkty.selectedIndex)
     })
 
     document.getElementById('flickity-prev')?.addEventListener('click', () => flkty.previous())

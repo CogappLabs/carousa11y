@@ -1,4 +1,5 @@
 /* tiny-slider styles */
+@reference "tailwindcss";
 .tiny-slide {
   @apply px-4;
 }
