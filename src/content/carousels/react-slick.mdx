@@ -2,41 +2,32 @@
 id: react-slick
 wcagStatus: pass
 fixesApplied:
-  - Custom controls (built-in dots use improper list structure if you include pagination)
-  - tabindex management for hidden slides
-  - Added aria-label to container
+  - tabindex management for hidden slides (library traps focus with aria-hidden)
 ---
 
 ## Summary
 
-- Built-in dots use `li` elements with incorrect ARIA roles
-- `aria-hidden="true"` on inactive slides but focusable elements inside
-- Pagination is optional; if included, use custom buttons
-- Fix: custom controls + `tabindex` management via `useEffect`
+- **Workaround required**: Library sets `aria-hidden="true"` on inactive slides but focusable elements inside remain tabbable, creating focus traps
+- Fix: Manage `tabindex` on focusable elements via `useEffect`
+- Built-in dots use `li` with `role="button"` (invalid ARIA) — use custom controls if pagination needed
 
 ## Accessibility Analysis
 
 **Score:** 57.4% — 35/61 accessibility issues resolved
 **Median resolution time:** 558.8 days
+**Oldest unresolved issue:** 3,178 days (8+ years)
 
-### Critical Issues
+### Open Issues (26)
 
-- `aria-hidden="true"` combined with `tabindex="-1"` — breaks ARIA rules
+- `aria-hidden="true"` combined with focusable elements — breaks ARIA rules
 - Focus doesn't move properly through slides
 - TalkBack and VoiceOver report poor accessibility on mobile
-- **Oldest unresolved issue: 3,178 days (8+ years)**
 
 ---
 
-## Our Implementation Notes
-
-Using custom controls. If you include pagination, built-in dots use improper list structure (`li` with `role="button"`). Managing `tabindex` on slide links to prevent focus traps.
-
-### The Focus Trap Problem
+## Our Workaround
 
 React Slick sets `aria-hidden="true"` on inactive slides but doesn't manage tabindex on focusable elements inside. This creates a focus trap.
-
-### Our Fix
 
 ```jsx
 useEffect(() => {
@@ -54,28 +45,14 @@ useEffect(() => {
 
 ### Custom Controls
 
-Built-in dots use `<li>` elements with `role="button"`, which is invalid ARIA:
+Built-in dots use `<li>` with `role="button"` (invalid ARIA). Use custom buttons:
 
 ```jsx
-<Slider
-  ref={sliderRef}
-  dots={false}     // Disable built-in dots
-  arrows={false}   // Disable built-in arrows
-  beforeChange={(_, next) => setCurrentSlide(next)}
->
+<Slider ref={sliderRef} dots={false} arrows={false}>
   {/* slides */}
 </Slider>
 
 {/* Custom controls */}
 <button onClick={() => sliderRef.current?.slickPrev()}>Previous</button>
 <button onClick={() => sliderRef.current?.slickNext()}>Next</button>
-
-{/* Custom dots with proper ARIA */}
-{slides.map((_, i) => (
-  <button
-    onClick={() => sliderRef.current?.slickGoTo(i)}
-    aria-label={`Go to slide ${i + 1}`}
-    aria-current={i === currentSlide ? 'true' : undefined}
-  />
-))}
 ```

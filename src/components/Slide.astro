@@ -11,9 +11,9 @@ interface Props {
 const { img, alt, title, text, link, class: className = '' } = Astro.props
 ---
 
-<div class={className}>
+<div class={className} role="group" aria-roledescription="slide">
   <img src={img} alt={alt} />
   <h3>{title}</h3>
   <p>{text}</p>
-  <a href="#">{link}</a>
+  <span class="text-stone-700 underline">{link}</span>
 </div>

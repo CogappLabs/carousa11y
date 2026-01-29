@@ -2,20 +2,20 @@
 id: glide
 wcagStatus: pass
 fixesApplied:
-  - Optional pagination aria-current handling (if used)
-  - Added aria-label to container
+  - Added aria-current to pagination (library doesn't provide)
 ---
 
 ## Summary
 
-- Pagination bullets lack `aria-current` by default; we add it on slide change
-- Container labeled as a region for assistive tech
+- **Workaround required**: Library provides pagination bullets but doesn't set `aria-current` on the active one
+- Fix: Add `aria-current` handling on slide change
+- Has open issues with cloned elements affecting focus
 
 ## Accessibility Analysis
 
 **Score:** 44.4% — 4/9 accessibility issues resolved
 
-### Critical Open Issues
+### Open Issues (5)
 
 - Focus management on hidden cloned elements (633+ days old)
 - Cloned item handling affects linked elements
@@ -23,15 +23,9 @@ fixesApplied:
 
 ---
 
-## Our Implementation Notes
-
-If you include pagination, add `aria-current` handling for bullets (not provided by library).
-
-### The aria-current Problem
+## Our Workaround
 
 Glide.js provides bullet pagination but doesn't set `aria-current` on the active bullet. Screen readers can't determine which slide is currently active.
-
-### Our Fix
 
 ```javascript
 const bullets = document.querySelectorAll('.glide__bullet')
@@ -62,9 +56,3 @@ Glide has built-in pagination via `data-glide-el="controls[nav]"`:
   <button class="glide__bullet" data-glide-dir="=2" aria-label="Go to slide 3"></button>
 </div>
 ```
-
-### Container Accessibility
-
-Added to our implementation:
-- `role="region"` on carousel container
-- `aria-label="Featured content carousel"` on container

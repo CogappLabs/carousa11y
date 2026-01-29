@@ -1,16 +1,15 @@
 ---
 id: splide
 wcagStatus: minor
-fixesApplied:
-  - Library-level issues cannot be easily fixed
+fixesApplied: []
 ---
 
 ## Summary
 
+- **No workarounds applied** — library-level issues can't be easily fixed
 - Markets itself as "accessible" but scores only 53.8%
-- Uses `role="tabpanel"` on `<li>` elements (minor ARIA role issue)
+- Uses `role="tabpanel"` on `<li>` elements (minor ARIA violation)
 - Uses `aria-selected` instead of `aria-current` for pagination
-- Library-level issues that can’t be easily fixed
 
 ## Accessibility Analysis
 
@@ -19,7 +18,7 @@ fixesApplied:
 
 ### Despite Marketing as Accessible
 
-Splide markets itself as "the accessible slider" but has critical issues:
+Splide markets itself as "the accessible slider" but has issues:
 
 - Inactive pagination items unreachable via Tab key
 - `destroy()` doesn't remove `tabindex="-1"`, breaking keyboard nav
@@ -27,31 +26,26 @@ Splide markets itself as "the accessible slider" but has critical issues:
 - Incorrect `aria-orientation` values (flagged in professional audits)
 - Chrome's `aria-hidden` restrictions prevent proper focus management
 
-### Recommendation
+### Library-Level Issues (can't fix)
 
-The accessible-carousel-boilerplates project notes Splide could be "the most accessible package" but requires avoiding `keyboard` and `slideFocus` options.
-
----
-
-## Our Implementation Notes
-
-Splide uses `role="tabpanel"` on `<li>` elements (minor ARIA role issue). Built-in pagination uses `aria-selected` instead of `aria-current`.
-
-### Library-Level Issues
-
-These issues are in the library itself and can't be easily fixed:
 - Uses `role="tabpanel"` on `<li>` elements (minor ARIA role violation)
-- Uses `aria-selected` instead of the more appropriate `aria-current` for pagination
+- Uses `aria-selected` instead of `aria-current` for pagination
 - Tab key behavior inconsistent
 
-### W3C Compliance
+### W3C Compliance Note
 
 Despite the issues above, Splide vanilla scores **100%** on our W3C manual audit due to:
 - Proper slide roles and labels
 - Live region for screen reader announcements
 - `aria-label` on slides ("1 of 3" pattern)
 
-### Setup
+### Recommendation
+
+The accessible-carousel-boilerplates project notes Splide could be "the most accessible package" but requires avoiding `keyboard` and `slideFocus` options.
+
+---
+
+## Implementation Notes
 
 ```javascript
 new Splide('.splide', {

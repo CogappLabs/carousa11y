@@ -3,7 +3,7 @@ import { slides } from '../../data/slides'
 import Slide from '../Slide.astro'
 ---
 
-<div class="keen-slider" id="keen-slider">
+<div class="keen-slider carousel-loading" id="keen-slider" role="region" aria-label="Featured content carousel">
   {slides.map((s) => (
     <div class="keen-slider__slide">
       <Slide {...s} />
@@ -41,12 +41,16 @@ import Slide from '../Slide.astro'
       })
     }
 
+    const sliderEl = document.getElementById('keen-slider')
     const keenSlider = new KeenSlider('#keen-slider', {
       loop: true,
       slideChanged: (s) => {
         updateDots(s.track.details.rel)
       },
     })
+
+    sliderEl?.classList.remove('carousel-loading')
+    sliderEl?.classList.add('carousel-ready')
 
     document.getElementById('keen-prev')?.addEventListener('click', () => keenSlider.prev())
     document.getElementById('keen-next')?.addEventListener('click', () => keenSlider.next())

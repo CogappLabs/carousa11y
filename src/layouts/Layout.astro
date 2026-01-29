@@ -129,6 +129,27 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site || 'https://example.
     }
   }
 
+  /* Skeleton loading for carousels before JS initializes */
+  .carousel-loading {
+    img {
+      @apply bg-stone-200 animate-pulse;
+      /* Hide actual image until loaded */
+      color: transparent;
+    }
+    h3, p, a {
+      @apply bg-stone-200 text-transparent rounded animate-pulse select-none;
+    }
+  }
+
+  .carousel-ready {
+    img, h3, p, a {
+      @apply bg-transparent animate-none;
+    }
+    h3, p, a {
+      @apply text-inherit;
+    }
+  }
+
   .version-toggle {
     @apply flex justify-center gap-1 mb-4;
   }

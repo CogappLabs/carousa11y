@@ -1,22 +1,23 @@
 ---
 id: react-responsive
 wcagStatus: pass
-fixesApplied:
-  - Custom controls (built-in uses li[role=button] if you include pagination)
-  - Added aria-label to container
+fixesApplied: []
 ---
 
 ## Summary
 
-- Built-in `showIndicators` uses `li[role=button]` (invalid ARIA)
-- Pagination is optional; if included, implement custom buttons
+- **No workarounds required** — use custom controls
+- Built-in `showIndicators` uses `li[role=button]` (invalid ARIA) — avoid it
+- All reported issues resolved, but 100% score is misleading
 
 ## Accessibility Analysis
 
 **Score:** 100% — All 22/22 accessibility issues resolved
 **Median resolution time:** 259.6 days
 
-### Known Issues (closed but indicate architectural problems)
+### Caveat
+
+100% score is misleading — the closed issues reveal poor accessibility architecture in the library. Known problems:
 
 - `role="button"` on `<li>` elements — invalid ARIA
 - Carousel root receives unwanted focus
@@ -24,15 +25,11 @@ fixesApplied:
 - Visual elements (dots, arrows) read to screen readers without `aria-hidden`
 - Invalid HTML structure during render phases
 
-### Caveat
-
-100% score is misleading — the closed issues reveal poor accessibility architecture in the library.
-
 ---
 
-## Our Implementation Notes
+## Implementation Notes
 
-Using custom controls instead of built-in `showIndicators` and `showArrows` to avoid a11y issues (li elements with role="button", improper list structure).
+Use custom controls instead of built-in `showIndicators` and `showArrows` to avoid a11y issues.
 
 ### The Problem with Built-in Controls
 
@@ -46,7 +43,7 @@ The library's `showIndicators` prop renders pagination as:
 
 Using `role="button"` on `<li>` elements is invalid. Buttons should be `<button>` elements.
 
-### Our Solution
+### Our Approach
 
 Disable built-in controls and implement custom ones:
 
@@ -65,8 +62,8 @@ Disable built-in controls and implement custom ones:
 
 {/* Custom prev/next buttons */}
 <div className="flex justify-center gap-4 mt-4">
-  <button onClick={prev} className="carousel-btn">Previous</button>
-  <button onClick={next} className="carousel-btn">Next</button>
+  <button onClick={prev}>Previous</button>
+  <button onClick={next}>Next</button>
 </div>
 
 {/* Custom dots with proper ARIA */}
@@ -77,7 +74,6 @@ Disable built-in controls and implement custom ones:
       onClick={() => goTo(i)}
       aria-label={`Go to slide ${i + 1}`}
       aria-current={i === currentSlide ? 'true' : undefined}
-      className={i === currentSlide ? 'bg-stone-800' : 'bg-stone-300'}
     />
   ))}
 </div>

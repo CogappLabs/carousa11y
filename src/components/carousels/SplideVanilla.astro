@@ -3,7 +3,7 @@ import { slides } from '../../data/slides'
 import Slide from '../Slide.astro'
 ---
 
-<div class="splide" aria-label="Splide carousel">
+<div class="splide carousel-loading" aria-label="Splide carousel">
   <div class="splide__track">
     <ul class="splide__list">
       {slides.map((s) => (
@@ -18,7 +18,11 @@ import Slide from '../Slide.astro'
 <script>
   async function initSplide() {
     const Splide = (await import('@splidejs/splide')).default
+    const splideEl = document.querySelector('.splide')
     new Splide('.splide', { type: 'loop', perPage: 1 }).mount()
+
+    splideEl?.classList.remove('carousel-loading')
+    splideEl?.classList.add('carousel-ready')
   }
 
   initSplide()

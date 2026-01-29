@@ -3,7 +3,7 @@ import { slides } from '../../data/slides'
 import Slide from '../Slide.astro'
 ---
 
-<div class="swiper">
+<div class="swiper carousel-loading" role="region" aria-label="Featured content carousel">
   <div class="swiper-wrapper">
     {slides.map((s) => (
       <div class="swiper-slide">
@@ -23,6 +23,7 @@ import Slide from '../Slide.astro'
     const Swiper = (await import('swiper')).default
     const { Navigation, Pagination, A11y } = await import('swiper/modules')
 
+    const swiperEl = document.querySelector('.swiper')
     new Swiper('.swiper', {
       modules: [Navigation, Pagination, A11y],
       loop: true,
@@ -40,6 +41,9 @@ import Slide from '../Slide.astro'
         paginationBulletMessage: 'Go to slide {{index}}',
       },
     })
+
+    swiperEl?.classList.remove('carousel-loading')
+    swiperEl?.classList.add('carousel-ready')
   }
 
   initSwiper()

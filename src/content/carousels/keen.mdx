@@ -1,36 +1,28 @@
 ---
 id: keen
 wcagStatus: pass
-fixesApplied:
-  - Accessible prev/next buttons
-  - Optional pagination buttons with aria-label and aria-current (if used)
+fixesApplied: []
 ---
 
 ## Summary
 
-- Prev/next controls provide the required accessible navigation
-- Optional pagination buttons (if used) should be labeled and reflect current state
-- Pagination state synced via `slideChanged`
+- **No workarounds required** — works with custom controls
+- Hook-based React API with `useKeenSlider`
+- Has 1 long-standing open issue (multi-slide view)
 
 ## Accessibility Analysis
 
 **Score:** 66.7% — 2/3 accessibility issues resolved
 
-### Critical Issue
+### Open Issue (1)
 
-1 unresolved issue is **1,190+ days old**: "Slider controls break if using more than 1 slide per view"
+- "Slider controls break if using more than 1 slide per view" — **1,190+ days old**
 
 ---
 
-## Our Implementation Notes
+## Implementation Notes
 
-Keen Slider has no built-in pagination. Pagination is optional; if included, use buttons with `aria-label` and `aria-current`.
-
-### Implementation Details
-
-- No built-in pagination; optional to add
-- Use `slideChanged` event to sync pagination state
-- Hook-based React API with `useKeenSlider`
+Keen Slider has no built-in pagination. Use `slideChanged` event to sync custom pagination state.
 
 ### Vanilla JS Setup
 

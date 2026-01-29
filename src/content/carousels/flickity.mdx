@@ -2,27 +2,24 @@
 id: flickity
 wcagStatus: pass
 fixesApplied:
-  - Custom controls (built-in dots not keyboard accessible if you include pagination)
-  - tabindex management for hidden slides
-  - Added aria-label to container
+  - tabindex management for hidden slides (library traps focus)
 ---
 
 ## Summary
 
-- `aria-hidden` on inactive slides traps focus on links/buttons
-- Fix: manage `tabindex` on focusable elements in hidden slides
-- Pagination is optional; if included, use custom buttons with accessible labels
+- **Workaround required**: Library sets `aria-hidden` on inactive slides but leaves focusable elements (links, buttons) inside them, creating focus traps
+- Fix: Manage `tabindex` on focusable elements when slides change
 
 ## Accessibility Analysis
 
 **Score:** 74.6% — 44/59 accessibility issues resolved
 **Median resolution time:** 69 days
 
-### Critical Open Issues (15)
+### Open Issues (15)
 
 - `aria-hidden` incorrectly applied to visible elements
 - Previous/next buttons lack accessible names
-- Page dots not keyboard accessible (if pagination is used)
+- Page dots not keyboard accessible
 - Screen readers crash after clicking navigation
 - Slides outside viewport remain focusable
 
@@ -32,15 +29,9 @@ The accessible-carousel-boilerplates project recommends avoiding `wrapAround` an
 
 ---
 
-## Our Implementation Notes
+## Our Workaround
 
-Flickity applies `aria-hidden` to inactive slides but keeps focusable elements inside. We manage `tabindex` on slide links to prevent focus traps.
-
-### The Focus Trap Problem
-
-Flickity sets `aria-hidden="true"` on non-visible slides, but links and buttons inside those slides remain focusable. This creates a focus trap where screen reader users can tab into content they can't see.
-
-### Our Fix
+Flickity sets `aria-hidden="true"` on non-visible slides, but links and buttons inside remain focusable. Screen reader users can tab into content they can't see.
 
 ```javascript
 const updateFocusableElements = (selectedIndex) => {
@@ -59,11 +50,3 @@ flkty.on('select', () => {
 // Initial setup
 updateFocusableElements(0)
 ```
-
-### Custom Controls
-
-Built-in page dots are not keyboard accessible. If you include pagination, implement custom buttons with:
-- Proper `<button>` elements
-- `aria-label="Go to slide N"`
-- `aria-current="true"` on active dot
-- Focus ring styles

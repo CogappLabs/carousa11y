@@ -32,11 +32,20 @@ export default function EmblaReact() {
   }, [emblaApi])
 
   return (
-    <div className="overflow-hidden">
+    <div
+      className="overflow-hidden"
+      role="region"
+      aria-label="Featured content carousel"
+    >
       <div ref={emblaRef} className="overflow-hidden">
         <div className="flex">
           {slides.map((slide, i) => (
-            <div key={i} className="flex-[0_0_100%] min-w-0 px-4">
+            <div
+              key={i}
+              className="flex-[0_0_100%] min-w-0 px-4"
+              role="group"
+              aria-roledescription="slide"
+            >
               <img
                 src={slide.img}
                 alt={slide.alt}
@@ -44,9 +53,7 @@ export default function EmblaReact() {
               />
               <h3 className="mt-4 mb-2 text-xl">{slide.title}</h3>
               <p className="m-0 mb-3 text-stone-600">{slide.text}</p>
-              <a href="#" className="text-stone-700 underline">
-                {slide.link}
-              </a>
+              <span className="text-stone-700 underline">{slide.link}</span>
             </div>
           ))}
         </div>

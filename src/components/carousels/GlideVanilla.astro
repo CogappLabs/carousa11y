@@ -5,7 +5,7 @@ import '@glidejs/glide/dist/css/glide.core.min.css'
 import '@glidejs/glide/dist/css/glide.theme.min.css'
 ---
 
-<div class="glide" aria-label="Featured content carousel" role="region">
+<div class="glide carousel-loading" aria-label="Featured content carousel" role="region">
   <div class="glide__track" data-glide-el="track">
     <ul class="glide__slides">
       {slides.map((s) => (
@@ -49,6 +49,10 @@ import '@glidejs/glide/dist/css/glide.theme.min.css'
     })
 
     glide.mount()
+
+    const glideEl = document.querySelector('.glide')
+    glideEl?.classList.remove('carousel-loading')
+    glideEl?.classList.add('carousel-ready')
   }
 
   initGlide()

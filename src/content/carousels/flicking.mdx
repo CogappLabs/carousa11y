@@ -1,20 +1,18 @@
 ---
 id: flicking
 wcagStatus: pass
-fixesApplied:
-  - Accessible prev/next buttons
-  - Optional pagination buttons with aria-label and aria-current (if used)
+fixesApplied: []
 ---
 
 ## Summary
 
-- Prev/next controls provide the required accessible navigation
-- Optional pagination buttons (if used) should be labeled and reflect current state
-- Reactive API makes it easy to sync pagination state
+- **No workarounds required** — works well with custom controls
+- Reactive API makes pagination state sync easy
+- Only 2 accessibility issues ever reported (both resolved)
 
 ## Accessibility Analysis
 
-**Score:** 100% — All 2/2 accessibility-related GitHub issues resolved
+**Score:** 100% — All 2/2 accessibility issues resolved
 **Median resolution time:** 300 days
 
 ### Strengths
@@ -29,13 +27,11 @@ fixesApplied:
 
 ---
 
-## Our Implementation Notes
-
-Pagination is optional. If you include it, use buttons with `aria-label` and `aria-current`, since the library doesn't provide accessible pagination out of the box.
+## Implementation Notes
 
 ### Pagination
 
-The `@egjs/flicking-plugins` Pagination plugin was unreliable. Better approach: use `connectFlickingReactiveAPI()` for custom pagination:
+The `@egjs/flicking-plugins` Pagination plugin was unreliable. Use `connectFlickingReactiveAPI()` for custom pagination:
 
 ```javascript
 import Flicking, { connectFlickingReactiveAPI } from '@egjs/flicking'
@@ -65,10 +61,9 @@ Must include `.flicking-camera` wrapper in HTML structure.
 
 ### Animation Errors
 
-Clicking prev/next rapidly throws "Animation is already playing" errors. Fix by wrapping navigation calls:
+Clicking prev/next rapidly throws "Animation is already playing" errors. Fix:
 
 ```javascript
-// Wrap in try/catch to handle rapid clicks
 flicking.prev().catch(() => {})
 flicking.next().catch(() => {})
 ```

@@ -26,11 +26,16 @@ export default function ReactResponsiveCarousel() {
         emulateTouch={true}
       >
         {slides.map((slide, i) => (
-          <div key={i} className="react-slide">
+          <div
+            key={i}
+            className="react-slide"
+            role="group"
+            aria-roledescription="slide"
+          >
             <img src={slide.img} alt={slide.alt} />
             <h3>{slide.title}</h3>
             <p>{slide.text}</p>
-            <a href="#">{slide.link}</a>
+            <span className="text-stone-700 underline">{slide.link}</span>
           </div>
         ))}
       </Carousel>

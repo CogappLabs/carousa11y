@@ -4,7 +4,7 @@ import Slide from '../Slide.astro'
 import 'tiny-slider/dist/tiny-slider.css'
 ---
 
-<div class="tiny-slider" id="tiny-slider" aria-label="Featured content carousel" role="region">
+<div class="tiny-slider carousel-loading" id="tiny-slider" aria-label="Featured content carousel" role="region">
   {slides.map((s) => (
     <div class="tiny-slide">
       <Slide {...s} />
@@ -77,6 +77,10 @@ import 'tiny-slider/dist/tiny-slider.css'
       // Fix: tiny-slider sets tabindex="-1" on control buttons, restore keyboard access
       const controlButtons = document.querySelectorAll('#tiny-controls button')
       controlButtons.forEach((btn) => btn.removeAttribute('tabindex'))
+
+      const sliderEl = document.getElementById('tiny-slider')
+      sliderEl?.classList.remove('carousel-loading')
+      sliderEl?.classList.add('carousel-ready')
     }, 100)
 
     slider.events.on('indexChanged', (info: any) => {

@@ -1,22 +1,21 @@
 ---
 id: embla
 wcagStatus: pass
-fixesApplied:
-  - Accessible prev/next buttons and labeled pagination (optional)
-  - Using embla-carousel-accessibility plugin
+fixesApplied: []
 ---
 
 ## Summary
 
-- Accessibility plugin provides proper roles, labels, and live region announcements
-- Prev/next controls are the required accessible navigation; pagination buttons are optional
+- **No workarounds required** — best-in-class accessibility
+- Dedicated accessibility plugin provides roles, labels, and live region announcements
+- Fastest issue resolution among all libraries tested (12.6 days median)
 
 ## Accessibility Analysis
 
-**Score:** 100% — All 8/8 accessibility-related GitHub issues resolved
+**Score:** 100% — All 8/8 accessibility issues resolved
 **Median resolution time:** 12.6 days
 
-### Why Embla Wins
+### Why Embla Leads
 
 - **Dedicated accessibility plugin** with comprehensive ARIA support
 - Native support for: Vanilla JS, React, Vue, Svelte, Solid
@@ -25,26 +24,24 @@ fixesApplied:
 ### Accessibility Plugin Features
 
 - Configurable carousel roles (`region` by default)
-- `aria-label` and `aria-roledescription` for carousel container
+- `aria-label` and `aria-roledescription` for container
 - Slide roles with position/grouping labels ("Slide 1 of 3")
 - Navigation button labeling ("Go to previous Slide")
 - Dot button accessibility labels
-- **ARIA live region** for announcing slide changes to screen readers
+- **ARIA live region** for screen reader announcements
 - Programmatic control via `setUpdateLiveRegion()`
 
 ### Caveat
 
-The 100% score means all *reported* issues are closed—it doesn't guarantee perfect accessibility. Always test with real assistive technology.
+100% score means all *reported* issues are closed—it doesn't guarantee perfect accessibility. Always test with real assistive technology.
 
 ---
 
-## Our Implementation Notes
-
-Using `embla-carousel-accessibility` plugin for proper ARIA roles, slide labels, and live region announcements. Pagination is optional; if included, use labeled buttons with `aria-current`.
+## Implementation Notes
 
 ### Version Compatibility
 
-- The `embla-carousel-accessibility` plugin **only works with v9.0.0-rc01**, not the stable v8.x releases
+- The `embla-carousel-accessibility` plugin **only works with v9.0.0-rc01**, not stable v8.x
 - Using v8.x with the accessibility plugin causes `emblaApi.snapList is not a function` errors
 
 ### API Changes in v9
@@ -56,7 +53,7 @@ Using `embla-carousel-accessibility` plugin for proper ARIA roles, slide labels,
 | `scrollTo(index)` | `goTo(index)` |
 | `selectedScrollSnap()` | `selectedSnap()` |
 
-### Setup Example
+### Setup
 
 ```javascript
 import EmblaCarousel from 'embla-carousel'
@@ -64,9 +61,3 @@ import { Accessibility } from 'embla-carousel-accessibility'
 
 const embla = EmblaCarousel(emblaNode, { loop: true }, [Accessibility()])
 ```
-
-### Implementation Details
-
-- No built-in pagination; optional to add
-- Fully class-agnostic, works great with Tailwind
-- Excellent TypeScript support

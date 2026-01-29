@@ -4,7 +4,7 @@ import Slide from '../Slide.astro'
 import 'flickity/css/flickity.css'
 ---
 
-<div class="flickity-carousel" aria-label="Featured content carousel" role="region">
+<div class="flickity-carousel carousel-loading" aria-label="Featured content carousel" role="region">
   {slides.map((s) => (
     <div class="flickity-slide">
       <Slide {...s} />
@@ -53,6 +53,7 @@ import 'flickity/css/flickity.css'
       })
     }
 
+    const carouselEl = document.querySelector('.flickity-carousel')
     const flkty = new Flickity('.flickity-carousel', {
       cellAlign: 'left',
       contain: true,
@@ -61,6 +62,9 @@ import 'flickity/css/flickity.css'
       pageDots: false,
       accessibility: true,
     })
+
+    carouselEl?.classList.remove('carousel-loading')
+    carouselEl?.classList.add('carousel-ready')
 
     // Initial focus setup
     updateFocusableElements(0)

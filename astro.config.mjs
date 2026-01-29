@@ -6,9 +6,8 @@ import remarkToc from 'remark-toc'
 import rehypeSlug from 'rehype-slug'
 
 export default defineConfig({
-  // Update these for your GitHub Pages deployment
-  // site: 'https://yourusername.github.io',
-  // base: '/a11y-carousel',
+  site: 'https://cogapplabs.github.io',
+  base: '/carousa11y',
   integrations: [
     react(),
     mdx({

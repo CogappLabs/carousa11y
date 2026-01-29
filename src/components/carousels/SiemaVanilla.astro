@@ -3,7 +3,7 @@ import { slides } from '../../data/slides'
 import Slide from '../Slide.astro'
 ---
 
-<div class="siema" aria-label="Featured content carousel" role="region">
+<div class="siema carousel-loading" aria-label="Featured content carousel" role="region">
   {slides.map((s) => (
     <div class="siema-slide">
       <Slide {...s} />
@@ -41,6 +41,7 @@ import Slide from '../Slide.astro'
       })
     }
 
+    const siemaEl = document.querySelector('.siema')
     const siema = new Siema({
       selector: '.siema',
       loop: true,
@@ -50,6 +51,9 @@ import Slide from '../Slide.astro'
         updateDots(this.currentSlide)
       },
     })
+    siemaEl?.classList.add('siema-initialized')
+    siemaEl?.classList.remove('carousel-loading')
+    siemaEl?.classList.add('carousel-ready')
 
     document.querySelector('.siema-prev')?.addEventListener('click', () => siema.prev())
     document.querySelector('.siema-next')?.addEventListener('click', () => siema.next())

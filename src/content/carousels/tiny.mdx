@@ -2,24 +2,23 @@
 id: tiny
 wcagStatus: pass
 fixesApplied:
-  - Custom prev/next buttons (built-in nav has tabindex issues)
-  - tabindex management for cloned slides
-  - Fixed nav button tabindex after init
-  - Added aria-label to container
+  - Remove tabindex="-1" from nav buttons (library makes them unreachable)
+  - tabindex management for cloned slides (loop mode creates focus traps)
 ---
 
 ## Summary
 
-- Built-in nav has `tabindex="-1"` making controls unreachable
-- Cloned slides for loop mode cause focus traps
-- Fix: custom prev/next + `tabindex` management on cloned slide focusables
+- **Two workarounds required**:
+  1. Library sets `tabindex="-1"` on navigation buttons, making them unreachable by keyboard
+  2. Loop mode clones slides, and focusable elements in clones create focus traps
+- Fix: Remove tabindex from buttons after init + manage tabindex on cloned slide elements
 
 ## Accessibility Analysis
 
 **Score:** 58.5% — 24/41 accessibility issues resolved
 **Median resolution time:** 80.2 days
 
-### Critical Open Issues (17)
+### Open Issues (17)
 
 - Arrow key navigation affects ALL sliders on page simultaneously
 - aria-live announces wrong slide counts ("slide 6 of 5")
@@ -28,13 +27,11 @@ fixesApplied:
 
 ---
 
-## Our Implementation Notes
+## Our Workarounds
 
-Using custom nav buttons for accessible controls. Built-in controls have `tabindex="-1"` and `aria-label` issues. Pagination is optional; if included, ensure buttons are labeled and reflect the current state.
+### 1. Navigation Button Fix
 
-### The tabindex Problem
-
-tiny-slider sets `tabindex="-1"` on buttons in the `controlsContainer`, making them unreachable by keyboard. We fix this after initialization:
+tiny-slider sets `tabindex="-1"` on buttons in the `controlsContainer`:
 
 ```javascript
 setTimeout(() => {
@@ -43,9 +40,9 @@ setTimeout(() => {
 }, 100)
 ```
 
-### Cloned Slides Focus Trap
+### 2. Cloned Slides Focus Trap
 
-In loop mode, tiny-slider clones slides at the beginning and end. Focusable elements in these clones create focus traps:
+In loop mode, tiny-slider clones slides. Focusable elements in clones trap focus:
 
 ```javascript
 const updateFocusableElements = () => {
@@ -62,11 +59,10 @@ const updateFocusableElements = () => {
 
 ### Slide Index Calculation
 
-tiny-slider's `indexChanged` event returns DOM index including clones. Use `displayIndex` for the actual slide number:
+`indexChanged` returns DOM index including clones. Use `displayIndex` for actual slide number:
 
 ```javascript
 slider.events.on('indexChanged', (info) => {
-  // displayIndex is 1-based
   const realIndex = (info.displayIndex - 1) % totalSlides
   updateDots(realIndex)
 })

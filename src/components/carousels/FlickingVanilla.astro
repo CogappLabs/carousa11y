@@ -3,7 +3,7 @@ import { slides } from '../../data/slides'
 import Slide from '../Slide.astro'
 ---
 
-<div class="flicking-viewport">
+<div class="flicking-viewport carousel-loading" role="region" aria-label="Featured content carousel">
   <div class="flicking-camera">
     {slides.map((s) => (
       <Slide {...s} class="flicking-panel" />
@@ -40,7 +40,7 @@ import Slide from '../Slide.astro'
       const dots = Array.from({ length: reactiveObj.totalPanelCount }, (_, i) => {
         const btn = document.createElement('button')
         btn.type = 'button'
-        btn.className = `w-3 h-3 rounded-full border-none p-0 cursor-pointer ${i === reactiveObj.currentPanelIndex ? 'bg-stone-800' : 'bg-stone-300'}`
+        btn.className = `w-3 h-3 rounded-full border-none p-0 cursor-pointer focus:outline-none focus:ring-2 focus:ring-amber-500 focus:ring-offset-2 ${i === reactiveObj.currentPanelIndex ? 'bg-stone-800' : 'bg-stone-300'}`
         btn.setAttribute('aria-label', `Go to slide ${i + 1}`)
         btn.addEventListener('click', () => reactiveObj.moveTo(i))
         return btn
@@ -62,6 +62,9 @@ import Slide from '../Slide.astro'
     document.querySelector('.flicking-next')?.addEventListener('click', () => {
       flicking.next().catch(() => {})
     })
+
+    viewport.classList.remove('carousel-loading')
+    viewport.classList.add('carousel-ready')
   }
 
   initFlicking()

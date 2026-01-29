@@ -1,17 +1,15 @@
 ---
 id: swiper
 wcagStatus: pass
-fixesApplied:
-  - Custom controls below carousel
-  - Optional paginationBulletMessage for screen readers (if used)
+fixesApplied: []
 ---
 
 ## Summary
 
-- Built-in A11y module with good defaults
-- Most feature-complete out of the box
-- Custom controls recommended - moved buttons below carousel
-- Pagination is optional; if included, use `paginationBulletMessage: 'Go to slide {{index}}'`
+- **No workarounds required** — built-in A11y module with good defaults
+- Most feature-complete accessibility out of the box
+- Includes live region for screen reader announcements
+- Has open issues but works well in practice
 
 ## Accessibility Analysis
 
@@ -20,12 +18,12 @@ fixesApplied:
 
 ### Strengths
 
-- Active maintenance
-- Fast issue resolution
-- Built-in A11y module with good defaults
+- Active maintenance with fast issue resolution
+- Built-in A11y module with sensible defaults
 - Most feature-complete out of the box
+- Includes live region for screen reader announcements
 
-### Critical Open Issues
+### Open Issues (22)
 
 - Infinite loops when tabbing through sliders
 - Broken tab key behavior with links inside slides
@@ -36,9 +34,7 @@ fixesApplied:
 
 ---
 
-## Our Implementation Notes
-
-Using custom controls below carousel. Added `paginationBulletMessage` for screen reader announcements.
+## Implementation Notes
 
 ### A11y Module Setup
 
@@ -62,8 +58,4 @@ Using custom controls below carousel. Added `paginationBulletMessage` for screen
 
 ### Why Custom Controls
 
-Built-in arrow buttons appear as overlays on the carousel, which can be visually confusing. We moved controls below the carousel for consistency with other libraries and better touch target accessibility.
-
-### Live Region
-
-Swiper's A11y module includes a live region for screen reader announcements—one of the few libraries with this feature built-in.
+We moved controls below the carousel for consistency with other libraries and better touch target accessibility. Built-in arrow buttons appear as overlays on the carousel, which can be visually confusing.

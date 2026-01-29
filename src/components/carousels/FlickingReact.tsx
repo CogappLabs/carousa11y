@@ -23,7 +23,7 @@ export default function FlickingReact() {
   }, [])
 
   return (
-    <div>
+    <div role="region" aria-label="Featured content carousel">
       <Flicking
         ref={flickingRef}
         circular={true}
@@ -35,7 +35,12 @@ export default function FlickingReact() {
         onChanged={handleChanged}
       >
         {slides.map((slide, i) => (
-          <div key={i} className="flicking-panel w-full px-4">
+          <div
+            key={i}
+            className="flicking-panel w-full px-4"
+            role="group"
+            aria-roledescription="slide"
+          >
             <img
               src={slide.img}
               alt={slide.alt}
@@ -43,9 +48,7 @@ export default function FlickingReact() {
             />
             <h3 className="mt-4 mb-2 text-xl">{slide.title}</h3>
             <p className="m-0 mb-3 text-stone-600">{slide.text}</p>
-            <a href="#" className="text-stone-700 underline">
-              {slide.link}
-            </a>
+            <span className="text-stone-700 underline">{slide.link}</span>
           </div>
         ))}
       </Flicking>
