@@ -15,7 +15,7 @@ const carousels = [
   { id: 'react-responsive', versions: ['react'] },
 ]
 
-const BASE_URL = 'http://localhost:4321'
+const BASE_URL = 'http://localhost:4321/carousa11y'
 
 // WCAG 2.1 AA specific rules
 const wcagAATags = ['wcag2a', 'wcag2aa', 'wcag21a', 'wcag21aa']

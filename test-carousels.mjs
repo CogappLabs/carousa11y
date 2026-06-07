@@ -10,7 +10,7 @@ const vanillaOnlyCarousels = ['siema', 'flickity', 'tiny', 'glide']
 // React-only carousels
 const reactOnlyCarousels = ['react-slick', 'react-responsive']
 
-const BASE_URL = 'http://localhost:4321'
+const BASE_URL = 'http://localhost:4321/carousa11y'
 
 async function testCarouselVersion(page, id, version) {
   const consoleErrors = []

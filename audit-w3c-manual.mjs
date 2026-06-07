@@ -20,7 +20,7 @@ const carousels = [
   { id: 'react-responsive', versions: ['react'] },
 ]
 
-const BASE_URL = 'http://localhost:4321'
+const BASE_URL = 'http://localhost:4321/carousa11y'
 
 async function auditCarousel(page, id, version) {
   const url = version === 'react' ? `${BASE_URL}/carousel/${id}#react` : `${BASE_URL}/carousel/${id}`
