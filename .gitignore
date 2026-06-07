@@ -13,6 +13,7 @@ dist-ssr
 *.local
 .npm-cache
 .astro
+.claude
 
 # Editor directories and files
 .vscode/*
