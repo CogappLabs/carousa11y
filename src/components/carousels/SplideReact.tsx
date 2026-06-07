@@ -1,7 +1,7 @@
 // @ts-expect-error - package exports issue
 import { Splide, SplideSlide } from '@splidejs/react-splide'
 import { slides } from '../../data/slides'
-import '@splidejs/splide/css'
+import '@splidejs/splide/dist/css/splide.min.css'
 
 export default function SplideReact() {
   return (
