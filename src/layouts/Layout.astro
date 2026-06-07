@@ -8,10 +8,13 @@ interface Props {
 const {
   title,
   description = 'Compare accessibility scores and features of popular carousel libraries. Find the most accessible carousel for your project.',
-  ogImage = '/og-image.png'
+  ogImage = '/og-image.png',
 } = Astro.props
 
-const canonicalURL = new URL(Astro.url.pathname, Astro.site || 'https://example.com')
+const canonicalURL = new URL(
+  Astro.url.pathname,
+  Astro.site || 'https://example.com',
+)
 ---
 
 <!doctype html>

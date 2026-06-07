@@ -11,7 +11,8 @@ interface Props {
   dots: string
 }
 
-const { score, version, stars, notes, github, demo, npm, nav, dots } = Astro.props
+const { score, version, stars, notes, github, demo, npm, nav, dots } =
+  Astro.props
 
 const isitaccessibleUrl = `https://isitaccessible.dev/package/${encodeURIComponent(npm)}`
 
@@ -28,8 +29,10 @@ const dotsLabels: Record<string, string> = {
   component: 'Component provided',
 }
 
-const linkClass = "text-stone-700 underline underline-offset-2 font-medium hover:text-amber-700 focus:outline-2 focus:outline-amber-500 focus:outline-offset-2 focus:rounded-sm"
-const valueLinkClass = "text-stone-950 underline underline-offset-2 font-semibold hover:text-amber-700 focus:outline-2 focus:outline-amber-500 focus:outline-offset-2 focus:rounded-sm"
+const linkClass =
+  'text-stone-700 underline underline-offset-2 font-medium hover:text-amber-700 focus:outline-2 focus:outline-amber-500 focus:outline-offset-2 focus:rounded-sm'
+const valueLinkClass =
+  'text-stone-950 underline underline-offset-2 font-semibold hover:text-amber-700 focus:outline-2 focus:outline-amber-500 focus:outline-offset-2 focus:rounded-sm'
 ---
 
 <div class="bg-stone-100 rounded-lg p-4 mb-6 text-sm">

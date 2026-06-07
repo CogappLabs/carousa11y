@@ -1,12 +1,14 @@
 ---
 layout: ../layouts/MarkdownLayout.astro
 title: Carousel Accessibility Research | Full Analysis & Recommendations
-description: In-depth accessibility research comparing 12 carousel libraries. Detailed WCAG analysis, screen reader testing results, and implementation recommendations.
+description: In-depth accessibility research comparing 11 carousel libraries. Detailed WCAG analysis, screen reader testing results, and implementation recommendations.
 ---
 
 # Accessible Carousel Library Comparison
 
-> Research conducted 2026-01-29 using [isitaccessible.dev](https://isitaccessible.dev/) scores and official documentation.
+> Scores re-fetched 2026-06-07 from [isitaccessible.dev](https://isitaccessible.dev/). Local WCAG 2.1 AA and W3C pattern audits run against this site's own implementations on the same date.
+
+> **Two numbers, two meanings.** The **score** below is isitaccessible.dev's measure of how many accessibility-related GitHub issues a library has closed — a signal about the *library's maintenance*, not your markup. Our **audit** runs axe-core and the W3C carousel checks against the actual implementations on this site (with workarounds applied). They diverge: several low-scoring libraries pass our audit because the right ARIA was added by hand. Read the score as "how much will the library fight you", and the audit as "what's achievable once you've done the work".
 
 ## Contents
 
@@ -18,9 +20,9 @@ description: In-depth accessibility research comparing 12 carousel libraries. De
 |---------|------------|----------|--------------|---------|-------|-------|
 | **Embla Carousel** | 100% | 8.0k | Jan 2026 | Yes | Yes | **Best choice** |
 | @egjs/flicking | 100% | 2.9k | Nov 2025 | Yes | Yes | Only 2 issues reported |
-| react-responsive-carousel | 100% | 2.7k | Jan 2026 | No | Yes | Known ARIA issues |
+| react-responsive-carousel | 100% | 2.7k | Jan 2026 | No | Yes | Passes our audit |
 | Siema | 85.7% | 3.5k | Sep 2024 | Yes | Wrap | Unmaintained |
-| Swiper | 84.9% | 41.8k | Jan 2026 | Yes | Yes | Keyboard/SR issues |
+| Swiper | 86.4% | 41.8k | Jan 2026 | Yes | Yes | Keyboard/SR issues |
 | Flickity | 74.6% | 7.6k | May 2024 | Yes | Wrap | Aging |
 | Keen Slider | 66.7% | 5.0k | Jan 2026 | Yes | Yes | Old a11y issue |
 | tiny-slider | 58.5% | 5.3k | Aug 2024 | Yes | Wrap | Focus issues |
@@ -46,9 +48,11 @@ Some libraries let you use your own class names (e.g., Tailwind utilities), whil
 | **Flickity** | ❌ No | Hardcoded classes |
 | **Keen Slider** | ❌ No | Fixed `keen-slider__slide` convention |
 
-### jQuery-Dependent Libraries (Not Included)
+### Libraries Not Included
 
-The following carousels require jQuery and are not included in the test app:
+These libraries were considered but not implemented or tested on this site. They are listed for reference, not scored as if covered.
+
+**jQuery-dependent** (require jQuery):
 
 | Library | A11y Score | Stars | Notes |
 |---------|------------|-------|-------|
@@ -57,6 +61,12 @@ The following carousels require jQuery and are not included in the test app:
 | accessible-slick | N/A | 271 | Purpose-built a11y fork of Slick. Best jQuery option. |
 
 If you must use jQuery, **accessible-slick** is the recommended choice as it was specifically designed for accessibility.
+
+**Other** (not implemented here):
+
+| Library | A11y Score | Stars | Notes |
+|---------|------------|-------|-------|
+| Pure React Carousel | 80% | 1.7k | React-only. Reported wrong ARIA roles. Not tested on this site. |
 
 ---
 
@@ -254,13 +264,13 @@ Chrome is developing native CSS carousel features with built-in accessibility:
 **Installation:**
 ```bash
 # Vanilla JS (requires v9 RC for accessibility plugin)
-npm install embla-carousel@9.0.0-rc01 embla-carousel-accessibility@9.0.0-rc01
+npm install embla-carousel@9.0.0-rc02 embla-carousel-accessibility@9.0.0-rc02
 
 # React (requires v9 RC for accessibility plugin)
-npm install embla-carousel-react@9.0.0-rc01 embla-carousel-accessibility@9.0.0-rc01
+npm install embla-carousel-react@9.0.0-rc02 embla-carousel-accessibility@9.0.0-rc02
 ```
 
-> **Note:** The accessibility plugin currently only supports Embla v9 (release candidate). The stable v8.x is incompatible with the accessibility plugin.
+> **Note:** The accessibility plugin only supports Embla v9 (release candidate), and the three packages must stay on the **same** rc version (they peer-depend on each other exactly). The stable v8.x is incompatible with the accessibility plugin, so do not "upgrade to latest" — npm's `latest` tag points at 8.x.
 
 **Always test with:**
 - Keyboard navigation (Tab, Arrow keys, Enter, Escape)

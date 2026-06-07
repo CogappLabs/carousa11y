@@ -7,8 +7,12 @@ interface Props {
 }
 
 const { frontmatter } = Astro.props
-const description = frontmatter.description || 'Carousel accessibility research and comparison.'
-const canonicalURL = new URL(Astro.url.pathname, Astro.site || 'https://example.com')
+const description =
+  frontmatter.description || 'Carousel accessibility research and comparison.'
+const canonicalURL = new URL(
+  Astro.url.pathname,
+  Astro.site || 'https://example.com',
+)
 ---
 
 <!doctype html>

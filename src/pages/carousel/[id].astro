@@ -1,28 +1,26 @@
 ---
-import Layout from '../../layouts/Layout.astro'
-import CarouselMeta from '../../components/CarouselMeta.astro'
 import carouselData from '../../carousels.json'
-import type { CarouselMeta as CarouselMetaType } from '../../data/types'
-
-// Import all vanilla carousel components
-import EmblaVanilla from '../../components/carousels/EmblaVanilla.astro'
-import FlickingVanilla from '../../components/carousels/FlickingVanilla.astro'
-import SwiperVanilla from '../../components/carousels/SwiperVanilla.astro'
-import SplideVanilla from '../../components/carousels/SplideVanilla.astro'
-import KeenVanilla from '../../components/carousels/KeenVanilla.astro'
-import SiemaVanilla from '../../components/carousels/SiemaVanilla.astro'
-import FlickityVanilla from '../../components/carousels/FlickityVanilla.astro'
-import TinyVanilla from '../../components/carousels/TinyVanilla.astro'
-import GlideVanilla from '../../components/carousels/GlideVanilla.astro'
-
+import CarouselMeta from '../../components/CarouselMeta.astro'
 // Import React carousel components
 import EmblaReact from '../../components/carousels/EmblaReact'
+// Import all vanilla carousel components
+import EmblaVanilla from '../../components/carousels/EmblaVanilla.astro'
 import FlickingReact from '../../components/carousels/FlickingReact'
-import SwiperReact from '../../components/carousels/SwiperReact'
-import SplideReact from '../../components/carousels/SplideReact'
+import FlickingVanilla from '../../components/carousels/FlickingVanilla.astro'
+import FlickityVanilla from '../../components/carousels/FlickityVanilla.astro'
+import GlideVanilla from '../../components/carousels/GlideVanilla.astro'
 import KeenReact from '../../components/carousels/KeenReact'
-import ReactSlick from '../../components/carousels/ReactSlick'
+import KeenVanilla from '../../components/carousels/KeenVanilla.astro'
 import ReactResponsive from '../../components/carousels/ReactResponsive'
+import ReactSlick from '../../components/carousels/ReactSlick'
+import SiemaVanilla from '../../components/carousels/SiemaVanilla.astro'
+import SplideReact from '../../components/carousels/SplideReact'
+import SplideVanilla from '../../components/carousels/SplideVanilla.astro'
+import SwiperReact from '../../components/carousels/SwiperReact'
+import SwiperVanilla from '../../components/carousels/SwiperVanilla.astro'
+import TinyVanilla from '../../components/carousels/TinyVanilla.astro'
+import type { CarouselMeta as CarouselMetaType } from '../../data/types'
+import Layout from '../../layouts/Layout.astro'
 
 // Import MDX documentation files
 const docs = import.meta.glob('../../content/carousels/*.mdx', { eager: true })

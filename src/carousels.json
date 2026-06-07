@@ -1,7 +1,7 @@
 {
   "embla": {
     "name": "Embla Carousel",
-    "version": "9.0.0-rc01",
+    "version": "9.0.0-rc02",
     "score": "100%",
     "stars": "8.0k",
     "notes": "Best choice. Has dedicated accessibility plugin with ARIA live regions.",
@@ -39,8 +39,8 @@
   },
   "swiper": {
     "name": "Swiper",
-    "version": "12.1.0",
-    "score": "84.9%",
+    "version": "12.2.0",
+    "score": "86.4%",
     "stars": "41.8k",
     "notes": "Most popular. Has keyboard/screen reader issues including infinite tab loops.",
     "github": "https://github.com/nolimits4web/swiper",

@@ -12,7 +12,7 @@ Compare the accessibility of 11 popular carousel libraries with real implementat
 |---------|-------|-------------------|
 | Embla Carousel | 100% | None |
 | Flicking | 100% | None |
-| Swiper | 84.9% | None |
+| Swiper | 86.4% | None |
 | Siema | 85.7% | None |
 | Flickity | 74.6% | tabindex management |
 | Keen Slider | 66.7% | None |
